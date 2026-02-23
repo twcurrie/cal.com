@@ -1,6 +1,7 @@
 import { getLocale } from "@calcom/features/auth/lib/getLocale";
 import { loadTranslations } from "@calcom/lib/server/i18n";
 import { IconSprites } from "@calcom/ui/components/icon";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { dir } from "i18next";
 import { Inter } from "next/font/google";
@@ -168,6 +169,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {children}
           </AppRouterI18nProvider>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
