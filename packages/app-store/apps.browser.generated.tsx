@@ -12,9 +12,6 @@ export const AppSettingsComponentsMap = {
   "general-app-settings": dynamic(
     () => import("./templates/general-app-settings/components/AppSettingsInterface")
   ),
-  weather_in_your_calendar: dynamic(
-    () => import("./weather_in_your_calendar/components/AppSettingsInterface")
-  ),
   zapier: dynamic(() => import("./zapier/components/AppSettingsInterface")),
 };
 export const EventTypeAddonMap = {
@@ -29,7 +26,6 @@ export const EventTypeAddonMap = {
   gtm: dynamic(() => import("./gtm/components/EventTypeAppCardInterface")),
   hitpay: dynamic(() => import("./hitpay/components/EventTypeAppCardInterface")),
   hubspot: dynamic(() => import("./hubspot/components/EventTypeAppCardInterface")),
-  insihts: dynamic(() => import("./insihts/components/EventTypeAppCardInterface")),
   matomo: dynamic(() => import("./matomo/components/EventTypeAppCardInterface")),
   metapixel: dynamic(() => import("./metapixel/components/EventTypeAppCardInterface")),
   "mock-payment-app": dynamic(() => import("./mock-payment-app/components/EventTypeAppCardInterface")),
@@ -37,7 +33,6 @@ export const EventTypeAddonMap = {
   "pipedrive-crm": dynamic(() => import("./pipedrive-crm/components/EventTypeAppCardInterface")),
   plausible: dynamic(() => import("./plausible/components/EventTypeAppCardInterface")),
   posthog: dynamic(() => import("./posthog/components/EventTypeAppCardInterface")),
-  qr_code: dynamic(() => import("./qr_code/components/EventTypeAppCardInterface")),
   salesforce: dynamic(() => import("./salesforce/components/EventTypeAppCardInterface")),
   stripepayment: dynamic(() => import("./stripepayment/components/EventTypeAppCardInterface")),
   "booking-pages-tag": dynamic(
@@ -64,6 +59,5 @@ export const EventTypeSettingsMap = {
   metapixel: dynamic(() => import("./metapixel/components/EventTypeAppSettingsInterface")),
   paypal: dynamic(() => import("./paypal/components/EventTypeAppSettingsInterface")),
   plausible: dynamic(() => import("./plausible/components/EventTypeAppSettingsInterface")),
-  qr_code: dynamic(() => import("./qr_code/components/EventTypeAppSettingsInterface")),
   stripepayment: dynamic(() => import("./stripepayment/components/EventTypeAppSettingsInterface")),
 };

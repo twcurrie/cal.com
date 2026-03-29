@@ -8,7 +8,6 @@ import { appKeysSchema as btcpayserver_zod_ts } from "./btcpayserver/zod";
 import { appKeysSchema as closecom_zod_ts } from "./closecom/zod";
 import { appKeysSchema as dailyvideo_zod_ts } from "./dailyvideo/zod";
 import { appKeysSchema as databuddy_zod_ts } from "./databuddy/zod";
-import { appKeysSchema as dub_zod_ts } from "./dub/zod";
 import { appKeysSchema as fathom_zod_ts } from "./fathom/zod";
 import { appKeysSchema as feishucalendar_zod_ts } from "./feishucalendar/zod";
 import { appKeysSchema as ga4_zod_ts } from "./ga4/zod";
@@ -18,7 +17,6 @@ import { appKeysSchema as googlevideo_zod_ts } from "./googlevideo/zod";
 import { appKeysSchema as gtm_zod_ts } from "./gtm/zod";
 import { appKeysSchema as hitpay_zod_ts } from "./hitpay/zod";
 import { appKeysSchema as hubspot_zod_ts } from "./hubspot/zod";
-import { appKeysSchema as insihts_zod_ts } from "./insihts/zod";
 import { appKeysSchema as intercom_zod_ts } from "./intercom/zod";
 import { appKeysSchema as jelly_zod_ts } from "./jelly/zod";
 import { appKeysSchema as jitsivideo_zod_ts } from "./jitsivideo/zod";
@@ -34,7 +32,6 @@ import { appKeysSchema as paypal_zod_ts } from "./paypal/zod";
 import { appKeysSchema as pipedrive_crm_zod_ts } from "./pipedrive-crm/zod";
 import { appKeysSchema as plausible_zod_ts } from "./plausible/zod";
 import { appKeysSchema as posthog_zod_ts } from "./posthog/zod";
-import { appKeysSchema as qr_code_zod_ts } from "./qr_code/zod";
 import { appKeysSchema as routing_forms_zod_ts } from "./routing-forms/zod";
 import { appKeysSchema as salesforce_zod_ts } from "./salesforce/zod";
 import { appKeysSchema as shimmervideo_zod_ts } from "./shimmervideo/zod";
@@ -45,7 +42,6 @@ import { appKeysSchema as event_type_app_card_zod_ts } from "./templates/event-t
 import { appKeysSchema as twipla_zod_ts } from "./twipla/zod";
 import { appKeysSchema as umami_zod_ts } from "./umami/zod";
 import { appKeysSchema as webex_zod_ts } from "./webex/zod";
-import { appKeysSchema as wordpress_zod_ts } from "./wordpress/zod";
 import { appKeysSchema as zapier_zod_ts } from "./zapier/zod";
 import { appKeysSchema as zoho_bigin_zod_ts } from "./zoho-bigin/zod";
 import { appKeysSchema as zohocalendar_zod_ts } from "./zohocalendar/zod";
@@ -58,7 +54,6 @@ export const appKeysSchemas = {
   closecom: closecom_zod_ts,
   dailyvideo: dailyvideo_zod_ts,
   databuddy: databuddy_zod_ts,
-  dub: dub_zod_ts,
   fathom: fathom_zod_ts,
   feishucalendar: feishucalendar_zod_ts,
   ga4: ga4_zod_ts,
@@ -68,7 +63,6 @@ export const appKeysSchemas = {
   gtm: gtm_zod_ts,
   hitpay: hitpay_zod_ts,
   hubspot: hubspot_zod_ts,
-  insihts: insihts_zod_ts,
   intercom: intercom_zod_ts,
   jelly: jelly_zod_ts,
   jitsivideo: jitsivideo_zod_ts,
@@ -84,7 +78,6 @@ export const appKeysSchemas = {
   "pipedrive-crm": pipedrive_crm_zod_ts,
   plausible: plausible_zod_ts,
   posthog: posthog_zod_ts,
-  qr_code: qr_code_zod_ts,
   "routing-forms": routing_forms_zod_ts,
   salesforce: salesforce_zod_ts,
   shimmervideo: shimmervideo_zod_ts,
@@ -95,7 +88,6 @@ export const appKeysSchemas = {
   twipla: twipla_zod_ts,
   umami: umami_zod_ts,
   webex: webex_zod_ts,
-  wordpress: wordpress_zod_ts,
   zapier: zapier_zod_ts,
   "zoho-bigin": zoho_bigin_zod_ts,
   zohocalendar: zohocalendar_zod_ts,

@@ -27,7 +27,6 @@ type TaskPayloads = {
   sendWorkflowEmails: z.infer<typeof import("./tasks/sendWorkflowEmails").ZSendWorkflowEmailsSchema>;
   scanWorkflowBody: z.infer<typeof import("./tasks/scanWorkflowBody").scanWorkflowBodySchema>;
   scanWorkflowUrls: z.infer<typeof import("./tasks/scanWorkflowUrls").scanWorkflowUrlsSchema>;
-  sendAnalyticsEvent: z.infer<typeof import("./tasks/analytics/schema").sendAnalyticsEventSchema>;
   bookingAudit: BookingAuditTaskConsumerPayload;
   sendAwaitingPaymentEmail: z.infer<
     typeof import("./tasks/sendAwaitingPaymentEmail").sendAwaitingPaymentEmailPayloadSchema

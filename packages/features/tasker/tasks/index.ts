@@ -29,8 +29,6 @@ const tasks: Record<TaskTypes, () => Promise<TaskHandler>> = {
   sendWorkflowEmails: () => import("./sendWorkflowEmails").then((module) => module.sendWorkflowEmails),
   scanWorkflowBody: () => import("./scanWorkflowBody").then((module) => module.scanWorkflowBody),
   scanWorkflowUrls: () => import("./scanWorkflowUrls").then((module) => module.scanWorkflowUrls),
-  sendAnalyticsEvent: () =>
-    import("./analytics/sendAnalyticsEvent").then((module) => module.sendAnalyticsEvent),
   sendAwaitingPaymentEmail: () =>
     import("./sendAwaitingPaymentEmail").then((module) => module.sendAwaitingPaymentEmail),
   sendProrationInvoiceEmail: () =>
