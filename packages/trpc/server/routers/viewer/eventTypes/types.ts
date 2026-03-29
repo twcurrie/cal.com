@@ -1,15 +1,11 @@
-import { z } from "zod";
-
 import { MAX_SEATS_PER_TIME_SLOT } from "@calcom/lib/constants";
 import type { PeriodType, SchedulingType } from "@calcom/prisma/enums";
 import type {
-  CalVideoSettings,
-  ChildInput,
-  DestinationCalendarInput,
-  HashedLinkInput,
-  HostGroupInput,
-  HostInput,
-} from "@calcom/features/eventtypes/lib/types";
+  CustomInputSchema,
+  EventTypeLocation,
+  EventTypeMetadata,
+  IntervalLimit,
+} from "@calcom/prisma/zod-utils";
 import {
   customInputSchema,
   EventTypeMetaDataSchema,
@@ -20,6 +16,7 @@ import {
   recurringEventType,
   rrSegmentQueryValueSchema,
 } from "@calcom/prisma/zod-utils";
+import { z } from "zod";
 
 // ============================================================================
 // EXPLICIT TYPE DEFINITIONS

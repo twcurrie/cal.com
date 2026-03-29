@@ -1,13 +1,10 @@
 import { prisma } from "@calcom/prisma/__mocks__/prisma";
-
-import { describe, it, expect, vi, beforeEach } from "vitest";
-
 import { isAuthorized } from "@calcom/features/ee/workflows/lib/isAuthorized";
 import { WorkflowRepository } from "@calcom/features/ee/workflows/repositories/WorkflowRepository";
 import { TRPCError } from "@trpc/server";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { deleteHandler } from "./delete.handler";
-import { removeSmsReminderFieldForEventTypes, removeAIAgentCallPhoneNumberFieldForEventTypes } from "./util";
+import { removeSmsReminderFieldForEventTypes } from "./util";
 
 vi.mock("@calcom/prisma", () => ({
   prisma,
@@ -25,15 +22,11 @@ vi.mock("@calcom/features/ee/workflows/lib/isAuthorized", () => ({
 
 vi.mock("./util", () => ({
   removeSmsReminderFieldForEventTypes: vi.fn(),
-  removeAIAgentCallPhoneNumberFieldForEventTypes: vi.fn(),
 }));
 
 describe("deleteHandler", () => {
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockRemoveSmsReminderFieldForEventTypes = vi.mocked(removeSmsReminderFieldForEventTypes);
-  const mockRemoveAIAgentCallPhoneNumberFieldForEventTypes = vi.mocked(
-    removeAIAgentCallPhoneNumberFieldForEventTypes
-  );
   const mockDeleteAllWorkflowReminders = vi.mocked(WorkflowRepository.deleteAllWorkflowReminders);
 
   const mockUser = {
@@ -78,7 +71,7 @@ describe("deleteHandler", () => {
   });
 
   describe("Booking field cleanup", () => {
-    it("should remove both SMS reminder and AI agent phone number fields", async () => {
+    it("should remove SMS reminder fields", async () => {
       const workflowId = 1;
       const eventTypeIds = [10, 20];
       const mockWorkflow = {
@@ -99,12 +92,6 @@ describe("deleteHandler", () => {
       await deleteHandler({ ctx: mockCtx, input: { id: workflowId } });
 
       expect(mockRemoveSmsReminderFieldForEventTypes).toHaveBeenCalledWith({
-        activeOnToRemove: eventTypeIds,
-        workflowId: workflowId,
-        isOrg: false,
-      });
-
-      expect(mockRemoveAIAgentCallPhoneNumberFieldForEventTypes).toHaveBeenCalledWith({
         activeOnToRemove: eventTypeIds,
         workflowId: workflowId,
         isOrg: false,
@@ -134,12 +121,6 @@ describe("deleteHandler", () => {
       await deleteHandler({ ctx: mockCtx, input: { id: workflowId } });
 
       expect(mockRemoveSmsReminderFieldForEventTypes).toHaveBeenCalledWith({
-        activeOnToRemove: teamIds,
-        workflowId: workflowId,
-        isOrg: true,
-      });
-
-      expect(mockRemoveAIAgentCallPhoneNumberFieldForEventTypes).toHaveBeenCalledWith({
         activeOnToRemove: teamIds,
         workflowId: workflowId,
         isOrg: true,
@@ -184,7 +165,6 @@ describe("deleteHandler", () => {
       expect(mockDeleteAllWorkflowReminders).toHaveBeenCalledWith(mockReminders);
 
       expect(mockRemoveSmsReminderFieldForEventTypes).toHaveBeenCalled();
-      expect(mockRemoveAIAgentCallPhoneNumberFieldForEventTypes).toHaveBeenCalled();
 
       expect(prisma.workflow.deleteMany).toHaveBeenCalledWith({
         where: {
