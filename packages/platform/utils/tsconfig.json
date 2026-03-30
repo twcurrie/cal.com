@@ -2,6 +2,7 @@
   "extends": "@calcom/tsconfig/base.json",
   "compilerOptions": {
     "target": "ES5",
+    "lib": ["ES5", "ES2022.Object", "DOM", "DOM.Iterable"],
     "resolveJsonModule": true,
     "types": ["jest"],
     "outDir": "./dist",
