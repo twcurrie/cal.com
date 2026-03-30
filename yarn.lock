@@ -2270,40 +2270,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@calcom/demodesk@workspace:packages/app-store/demodesk":
-  version: 0.0.0-use.local
-  resolution: "@calcom/demodesk@workspace:packages/app-store/demodesk"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
-"@calcom/dialpad@workspace:packages/app-store/dialpad":
-  version: 0.0.0-use.local
-  resolution: "@calcom/dialpad@workspace:packages/app-store/dialpad"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
 "@calcom/discord@workspace:packages/app-store/discord":
   version: 0.0.0-use.local
   resolution: "@calcom/discord@workspace:packages/app-store/discord"
   dependencies:
     "@calcom/lib": "workspace:*"
     "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
-"@calcom/dub@workspace:packages/app-store/dub":
-  version: 0.0.0-use.local
-  resolution: "@calcom/dub@workspace:packages/app-store/dub"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-    dub-package: "npm:dub@^0.61.12"
   languageName: unknown
   linkType: soft
 
@@ -2464,15 +2436,6 @@ __metadata:
     "@calcom/types": "workspace:*"
     "@ewsjs/xhr": "npm:3.1.3"
     ews-javascript-api: "npm:0.11.0"
-  languageName: unknown
-  linkType: soft
-
-"@calcom/facetime@workspace:packages/app-store/facetime":
-  version: 0.0.0-use.local
-  resolution: "@calcom/facetime@workspace:packages/app-store/facetime"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -2670,15 +2633,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@calcom/insihts@workspace:packages/app-store/insihts":
-  version: 0.0.0-use.local
-  resolution: "@calcom/insihts@workspace:packages/app-store/insihts"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
 "@calcom/intercom@workspace:packages/app-store/intercom":
   version: 0.0.0-use.local
   resolution: "@calcom/intercom@workspace:packages/app-store/intercom"
@@ -2853,15 +2807,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@calcom/ping@workspace:packages/app-store/ping":
-  version: 0.0.0-use.local
-  resolution: "@calcom/ping@workspace:packages/app-store/ping"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
 "@calcom/pipedrive-crm@workspace:packages/app-store/pipedrive-crm":
   version: 0.0.0-use.local
   resolution: "@calcom/pipedrive-crm@workspace:packages/app-store/pipedrive-crm"
@@ -2971,27 +2916,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@calcom/qr_code@workspace:packages/app-store/qr_code":
-  version: 0.0.0-use.local
-  resolution: "@calcom/qr_code@workspace:packages/app-store/qr_code"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
 "@calcom/riverside@workspace:packages/app-store/riverside":
   version: 0.0.0-use.local
   resolution: "@calcom/riverside@workspace:packages/app-store/riverside"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
-"@calcom/roam@workspace:packages/app-store/roam":
-  version: 0.0.0-use.local
-  resolution: "@calcom/roam@workspace:packages/app-store/roam"
   dependencies:
     "@calcom/lib": "workspace:*"
     "@calcom/types": "workspace:*"
@@ -3255,15 +3182,6 @@ __metadata:
 "@calcom/umami@workspace:packages/app-store/umami":
   version: 0.0.0-use.local
   resolution: "@calcom/umami@workspace:packages/app-store/umami"
-  dependencies:
-    "@calcom/lib": "workspace:*"
-    "@calcom/types": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
-"@calcom/weather_in_your_calendar@workspace:packages/app-store/weather_in_your_calendar":
-  version: 0.0.0-use.local
-  resolution: "@calcom/weather_in_your_calendar@workspace:packages/app-store/weather_in_your_calendar"
   dependencies:
     "@calcom/lib": "workspace:*"
     "@calcom/types": "workspace:*"
@@ -17081,17 +16999,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"WipeMyCal@workspace:packages/app-store/wipemycalother":
-  version: 0.0.0-use.local
-  resolution: "WipeMyCal@workspace:packages/app-store/wipemycalother"
-  dependencies:
-    "@calcom/i18n": "workspace:*"
-    "@calcom/prisma": "workspace:*"
-    "@calcom/types": "workspace:*"
-    queue: "npm:6.0.2"
-  languageName: unknown
-  linkType: soft
-
 "abab@npm:^2.0.6":
   version: 2.0.6
   resolution: "abab@npm:2.0.6"
@@ -21157,21 +21064,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dub-package@npm:dub@^0.61.12":
-  version: 0.61.14
-  resolution: "dub@npm:0.61.14"
-  peerDependencies:
-    "@modelcontextprotocol/sdk": ">=1.5.0 <1.10.0"
-    zod: ">= 3"
-  peerDependenciesMeta:
-    "@modelcontextprotocol/sdk":
-      optional: true
-  bin:
-    mcp: bin/mcp-server.js
-  checksum: 10/8db3d81365a8ed7c0183bced62cae773efcd78c544a28498e9e0db1135408caffcd57ed38ea20f156e8c50f2afc3122346ad731bb58ff1dcf5c93354df6ed263
-  languageName: node
-  linkType: hard
-
 "dub@npm:0.59.1":
   version: 0.59.1
   resolution: "dub@npm:0.59.1"
@@ -24798,7 +24690,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.3, inherits@npm:~2.0.4":
+"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.4":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 10/cd45e923bee15186c07fa4c89db0aace24824c482fb887b528304694b2aa6ff8a898da8657046a5dcf3e46cd6db6c61629551f9215f208d7c3f157cf9b290521
@@ -32832,15 +32724,6 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: 10/72900df0616e473e824202113c3df6abae59150dfb73ed13273503127235320e9c8ca4aaaaccfd58cf417c6ca92a6e68ee9a5c3182886ae949a768639b388a7b
-  languageName: node
-  linkType: hard
-
-"queue@npm:6.0.2":
-  version: 6.0.2
-  resolution: "queue@npm:6.0.2"
-  dependencies:
-    inherits: "npm:~2.0.3"
-  checksum: 10/3437954ef1442c86ff01a0fbe3dc6222838823b1ca97f37eff651bc20b868c0c2904424ef2c0d44cba46055f54b578f92866e573125dc9a5e8823d751e4d1585
   languageName: node
   linkType: hard
 
