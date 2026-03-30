@@ -32,8 +32,6 @@ export function fromEntriesWithDuplicateKeys(entries: IterableIterator<[string, 
     return result;
   }
 
-  // Consider setting atleast ES2015 as target
-  // @ts-expect-error TS2802: IterableIterator iteration requires downlevelIteration
   for (const [key, value] of entries) {
     if (Object.hasOwn(result, key)) {
       let currentValue = result[key];
