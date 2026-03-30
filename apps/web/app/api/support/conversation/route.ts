@@ -1,7 +1,4 @@
-import { cookies, headers } from "next/headers";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-
+import process from "node:process";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { BillingPlanService } from "@calcom/features/ee/billing/domain/billing-plans";
 import { MembershipRepository } from "@calcom/features/membership/repositories/MembershipRepository";
@@ -12,8 +9,10 @@ import { safeStringify } from "@calcom/lib/safeStringify";
 import { prisma } from "@calcom/prisma";
 import type { Contact } from "@calcom/web/modules/ee/support/lib/intercom/intercom";
 import { intercom } from "@calcom/web/modules/ee/support/lib/intercom/intercom";
-
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
+import { cookies, headers } from "next/headers";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 const log = logger.getSubLogger({ prefix: [`/api/support/conversation`] });
 

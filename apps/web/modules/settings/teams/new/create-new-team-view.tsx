@@ -1,17 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import posthog from "posthog-js";
-import React, { useEffect, useRef, useState, type FormEvent } from "react";
-
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import slugify from "@calcom/lib/slugify";
 import { Avatar } from "@calcom/ui/components/avatar";
 import { Button } from "@calcom/ui/components/button";
-import { Label, TextField, TextArea } from "@calcom/ui/components/form";
+import { Label, TextArea, TextField } from "@calcom/ui/components/form";
 import { ImageUploader } from "@calcom/ui/components/image-uploader";
 import { showToast } from "@calcom/ui/components/toast";
-
+import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
+import React, { type FormEvent, useEffect, useRef, useState } from "react";
 import { OnboardingCard } from "~/onboarding/components/OnboardingCard";
 import { OnboardingLayout } from "~/onboarding/components/OnboardingLayout";
 import { OnboardingBrowserView } from "~/onboarding/components/onboarding-browser-view";

@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-
 import SectionBottomActions from "@calcom/features/settings/SectionBottomActions";
 import customTemplate, { hasTemplateIntegration } from "@calcom/features/webhooks/lib/integrationTemplate";
 import { WebhookVersion } from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
@@ -11,16 +8,10 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { TimeUnit, WebhookTriggerEvents } from "@calcom/prisma/enums";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { Button } from "@calcom/ui/components/button";
-import { Select } from "@calcom/ui/components/form";
-import { TextArea } from "@calcom/ui/components/form";
-import { ToggleGroup } from "@calcom/ui/components/form";
-import { Form } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
-import { Switch } from "@calcom/ui/components/form";
-
+import { Form, Label, Select, Switch, TextArea, TextField, ToggleGroup } from "@calcom/ui/components/form";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { TimeTimeUnitInput } from "~/ee/workflows/components/TimeTimeUnitInput";
-
 import WebhookTestDisclosure from "./WebhookTestDisclosure";
 
 export type TWebhook = RouterOutputs["viewer"]["webhook"]["list"][number];

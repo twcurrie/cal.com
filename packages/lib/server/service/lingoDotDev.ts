@@ -1,8 +1,7 @@
-import type { LocaleCode } from "@lingo.dev/_spec";
-import { LingoDotDevEngine } from "lingo.dev/sdk";
-
 import { LINGO_DOT_DEV_API_KEY } from "@calcom/lib/constants";
 import logger from "@calcom/lib/logger";
+import type { LocaleCode } from "@lingo.dev/_spec";
+import { LingoDotDevEngine } from "lingo.dev/sdk";
 
 export class LingoDotDevService {
   private static engine = new LingoDotDevEngine({
@@ -26,7 +25,7 @@ export class LingoDotDevService {
     }
 
     try {
-      const result = await this.engine.localizeText(text, {
+      const result = await LingoDotDevService.engine.localizeText(text, {
         sourceLocale,
         targetLocale,
       });
@@ -51,7 +50,7 @@ export class LingoDotDevService {
     targetLocales: string[]
   ): Promise<string[]> {
     try {
-      const result = await this.engine.batchLocalizeText(text, {
+      const result = await LingoDotDevService.engine.batchLocalizeText(text, {
         // TODO: LocaleCode is hacky, use our locale mapping instead.
         sourceLocale: sourceLocale as LocaleCode,
         targetLocales: targetLocales as LocaleCode[],
@@ -77,7 +76,7 @@ export class LingoDotDevService {
     }
 
     try {
-      const result = await this.engine.localizeChat(
+      const result = await LingoDotDevService.engine.localizeChat(
         texts.map((text) => ({ name: "NO_NAME", text: text.trim() })),
         {
           sourceLocale,

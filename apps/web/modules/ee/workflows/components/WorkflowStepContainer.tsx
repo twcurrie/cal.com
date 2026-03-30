@@ -1,4 +1,4 @@
-import { type TFunction } from "i18next";
+import type { TFunction } from "i18next";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
@@ -8,11 +8,11 @@ import "react-phone-number-input/style.css";
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import {
   getTemplateBodyForAction,
-  shouldScheduleEmailReminder,
-  isSMSOrWhatsappAction,
-  isSMSAction,
-  isWhatsappAction,
   isFormTrigger,
+  isSMSAction,
+  isSMSOrWhatsappAction,
+  isWhatsappAction,
+  shouldScheduleEmailReminder,
 } from "@calcom/features/ee/workflows/lib/actionHelperFunctions";
 import { DYNAMIC_TEXT_VARIABLES } from "@calcom/features/ee/workflows/lib/constants";
 import {
@@ -41,29 +41,22 @@ import { trpc } from "@calcom/trpc/react";
 import classNames from "@calcom/ui/classNames";
 import { Badge, InfoBadge } from "@calcom/ui/components/badge";
 import { Button } from "@calcom/ui/components/button";
-import {
-  DialogContent,
-  DialogFooter,
-  DialogClose,
-} from "@calcom/ui/components/dialog";
-import { AddVariablesDropdown } from "@calcom/ui/components/editor";
-import { Editor } from "@calcom/ui/components/editor";
-import { CheckboxField } from "@calcom/ui/components/form";
-import { EmailField } from "@calcom/ui/components/form";
-import { TextArea } from "@calcom/ui/components/form";
-import { Input } from "@calcom/ui/components/form";
-import { Label } from "@calcom/ui/components/form";
-import { TextField } from "@calcom/ui/components/form";
-import { Select } from "@calcom/ui/components/form";
-import { MultiSelectCheckbox } from "@calcom/ui/components/form";
+import { DialogClose, DialogContent, DialogFooter } from "@calcom/ui/components/dialog";
+import { AddVariablesDropdown, Editor } from "@calcom/ui/components/editor";
 import type { MultiSelectCheckboxesOptionType as Option } from "@calcom/ui/components/form";
-import { showToast } from "@calcom/ui/components/toast";
-import { CircleHelpIcon, InfoIcon } from "@coss/ui/icons";
 import {
-  useHasPaidPlan,
-  useHasActiveTeamPlan,
-} from "@calcom/web/modules/billing/hooks/useHasPaidPlan";
-
+  CheckboxField,
+  EmailField,
+  Input,
+  Label,
+  MultiSelectCheckbox,
+  Select,
+  TextArea,
+  TextField,
+} from "@calcom/ui/components/form";
+import { showToast } from "@calcom/ui/components/toast";
+import { useHasActiveTeamPlan, useHasPaidPlan } from "@calcom/web/modules/billing/hooks/useHasPaidPlan";
+import { CircleHelpIcon, InfoIcon } from "@coss/ui/icons";
 import { TimeTimeUnitInput } from "./TimeTimeUnitInput";
 
 type User = RouterOutputs["viewer"]["me"]["get"];
@@ -133,10 +126,7 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
     { enabled: !!teamId }
   );
 
-  const { data: userTeams } = trpc.viewer.teams.list.useQuery(
-    {},
-    { enabled: !teamId }
-  );
+  const { data: userTeams } = trpc.viewer.teams.list.useQuery({}, { enabled: !teamId });
 
   const creditsTeamId = userTeams?.find(
     (team) => team.accepted && (team.role === MembershipRole.ADMIN || team.role === MembershipRole.OWNER)
@@ -150,11 +140,9 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
 
   const timeFormat = getTimeFormatStringFromUserTimeFormat(props.user.timeFormat);
 
-  const verifiedNumbers =
-    _verifiedNumbers?.map((number) => number.phoneNumber) || [];
+  const verifiedNumbers = _verifiedNumbers?.map((number) => number.phoneNumber) || [];
   const verifiedEmails = _verifiedEmails || [];
-  const [isAdditionalInputsDialogOpen, setIsAdditionalInputsDialogOpen] =
-    useState(false);
+  const [isAdditionalInputsDialogOpen, setIsAdditionalInputsDialogOpen] = useState(false);
 
   const [verificationCode, setVerificationCode] = useState("");
 
@@ -187,9 +175,7 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
     name: "trigger",
   });
 
-  const [timeSectionText, setTimeSectionText] = useState(
-    getTimeSectionText(trigger, t)
-  );
+  const [timeSectionText, setTimeSectionText] = useState(getTimeSectionText(trigger, t));
 
   const triggerOptions = getWorkflowTriggerOptions(t, planState);
   const templateOptions = getWorkflowTemplateOptions(t, step?.action, planState, trigger);
@@ -470,31 +456,31 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
                 }}
               />
               <div className="mt-1">
-                  <Controller
-                    name="selectAll"
-                    render={({ field: { value, onChange } }) => (
-                      <CheckboxField
-                        description={
-                          isOrganization
-                            ? t("apply_to_all_teams")
-                            : isFormTrigger(form.getValues("trigger"))
-                              ? t("apply_to_all_routing_forms")
-                              : t("apply_to_all_event_types")
+                <Controller
+                  name="selectAll"
+                  render={({ field: { value, onChange } }) => (
+                    <CheckboxField
+                      description={
+                        isOrganization
+                          ? t("apply_to_all_teams")
+                          : isFormTrigger(form.getValues("trigger"))
+                            ? t("apply_to_all_routing_forms")
+                            : t("apply_to_all_event_types")
+                      }
+                      disabled={props.readOnly}
+                      descriptionClassName="ml-0"
+                      onChange={(e) => {
+                        onChange(e);
+                        if (e.target.value) {
+                          setSelectedOptions(allOptions);
+                          form.setValue("activeOn", allOptions, { shouldDirty: true });
                         }
-                        disabled={props.readOnly}
-                        descriptionClassName="ml-0"
-                        onChange={(e) => {
-                          onChange(e);
-                          if (e.target.value) {
-                            setSelectedOptions(allOptions);
-                            form.setValue("activeOn", allOptions, { shouldDirty: true });
-                          }
-                        }}
-                        checked={value}
-                      />
-                    )}
-                  />
-                </div>
+                      }}
+                      checked={value}
+                    />
+                  )}
+                />
+              </div>
             </div>
           )}
           {!!timeSectionText && steps.some((s) => isSMSAction(s.action)) && (
@@ -619,48 +605,46 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
               }}
             />
           </div>
-          {!isWhatsappAction(
-            form.getValues(`steps.${step.stepNumber - 1}.action`)
-          ) && (
-              <div>
-                {_isSenderIsNeeded ? (
-                  <>
-                    <div className="pt-4">
-                      <div className="flex items-center">
-                        <Label>{t("sender_id")}</Label>
-                      </div>
-                      <Input
-                        type="text"
-                        placeholder={SENDER_ID}
-                        disabled={props.readOnly}
-                        maxLength={11}
-                        {...form.register(`steps.${step.stepNumber - 1}.sender`)}
-                      />
-                      <div className="mt-1.5 flex items-center gap-1">
-                        <InfoIcon size={10} className="text-gray-500" />
-                        <div className="text-subtle text-xs">{t("sender_id_info")}</div>
-                      </div>
+          {!isWhatsappAction(form.getValues(`steps.${step.stepNumber - 1}.action`)) && (
+            <div>
+              {_isSenderIsNeeded ? (
+                <>
+                  <div className="pt-4">
+                    <div className="flex items-center">
+                      <Label>{t("sender_id")}</Label>
                     </div>
-                    {form.formState.errors.steps &&
-                      form.formState?.errors?.steps[step.stepNumber - 1]?.sender && (
-                        <p className="text-error mt-1 text-xs">{t("sender_id_error_message")}</p>
-                      )}
-                  </>
-                ) : (
-                  <>
-                    <div className="pt-4">
-                      <Label>{t("sender_name")}</Label>
-                      <Input
-                        type="text"
-                        disabled={props.readOnly}
-                        placeholder={SENDER_NAME}
-                        {...form.register(`steps.${step.stepNumber - 1}.senderName`)}
-                      />
+                    <Input
+                      type="text"
+                      placeholder={SENDER_ID}
+                      disabled={props.readOnly}
+                      maxLength={11}
+                      {...form.register(`steps.${step.stepNumber - 1}.sender`)}
+                    />
+                    <div className="mt-1.5 flex items-center gap-1">
+                      <InfoIcon size={10} className="text-gray-500" />
+                      <div className="text-subtle text-xs">{t("sender_id_info")}</div>
                     </div>
-                  </>
-                )}
-              </div>
-            )}
+                  </div>
+                  {form.formState.errors.steps &&
+                    form.formState?.errors?.steps[step.stepNumber - 1]?.sender && (
+                      <p className="text-error mt-1 text-xs">{t("sender_id_error_message")}</p>
+                    )}
+                </>
+              ) : (
+                <>
+                  <div className="pt-4">
+                    <Label>{t("sender_name")}</Label>
+                    <Input
+                      type="text"
+                      disabled={props.readOnly}
+                      placeholder={SENDER_NAME}
+                      {...form.register(`steps.${step.stepNumber - 1}.senderName`)}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           {isPhoneNumberNeeded && (
             <div className="bg-cal-muted mt-2 rounded-md p-4 pt-0">
               <Label className="pt-4">{t("custom_phone_number")}</Label>
@@ -754,131 +738,123 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
               )}
             </div>
           )}
-          {canRequirePhoneNumber(
-            form.getValues(`steps.${step.stepNumber - 1}.action`)
-          ) && (
-              <div className="mt-2">
+          {canRequirePhoneNumber(form.getValues(`steps.${step.stepNumber - 1}.action`)) && (
+            <div className="mt-2">
+              <Controller
+                name={`steps.${step.stepNumber - 1}.numberRequired`}
+                control={form.control}
+                render={() => (
+                  <CheckboxField
+                    disabled={props.readOnly}
+                    defaultChecked={form.getValues(`steps.${step.stepNumber - 1}.numberRequired`) || false}
+                    description={t("make_phone_number_required")}
+                    descriptionClassName="ml-0"
+                    onChange={(e) =>
+                      form.setValue(`steps.${step.stepNumber - 1}.numberRequired`, e.target.checked, {
+                        shouldDirty: true,
+                      })
+                    }
+                  />
+                )}
+              />
+            </div>
+          )}
+          {isEmailAddressNeeded && (
+            <div className="bg-cal-muted border-muted mt-5 rounded-2xl border p-4">
+              <Label>{t("email_address")}</Label>
+              <div className="block items-center gap-2 sm:flex">
                 <Controller
-                  name={`steps.${step.stepNumber - 1}.numberRequired`}
-                  control={form.control}
-                  render={() => (
-                    <CheckboxField
+                  name={`steps.${step.stepNumber - 1}.sendTo`}
+                  render={({ field: { value, onChange } }) => (
+                    <EmailField
+                      required
+                      containerClassName="w-full"
+                      className="h-8 min-w-fit"
+                      placeholder={t("email_address")}
+                      value={value}
                       disabled={props.readOnly}
-                      defaultChecked={form.getValues(`steps.${step.stepNumber - 1}.numberRequired`) || false}
-                      description={t("make_phone_number_required")}
-                      descriptionClassName="ml-0"
-                      onChange={(e) =>
-                        form.setValue(`steps.${step.stepNumber - 1}.numberRequired`, e.target.checked, {
-                          shouldDirty: true,
-                        })
-                      }
+                      onChange={(val) => {
+                        const isAlreadyVerified = !!verifiedEmails
+                          ?.concat([])
+                          .find((email) => email === val.target.value);
+                        setEmailVerified(isAlreadyVerified);
+                        onChange(val);
+                      }}
                     />
                   )}
                 />
-              </div>
-            )}
-          {isEmailAddressNeeded && (
-              <div className="bg-cal-muted border-muted mt-5 rounded-2xl border p-4">
-                <Label>{t("email_address")}</Label>
-                <div className="block items-center gap-2 sm:flex">
-                  <Controller
-                    name={`steps.${step.stepNumber - 1}.sendTo`}
-                    render={({ field: { value, onChange } }) => (
-                      <EmailField
-                        required
-                        containerClassName="w-full"
-                        className="h-8 min-w-fit"
-                        placeholder={t("email_address")}
-                        value={value}
-                        disabled={props.readOnly}
-                        onChange={(val) => {
-                          const isAlreadyVerified = !!verifiedEmails
-                            ?.concat([])
-                            .find((email) => email === val.target.value);
-                          setEmailVerified(isAlreadyVerified);
-                          onChange(val);
-                        }}
-                      />
-                    )}
-                  />
-                  <Button
-                    color="secondary"
-                    size="sm"
-                    disabled={emailVerified || props.readOnly || false}
-                    className={classNames(
-                      "min-w-fit text-sm font-medium",
-                      emailVerified ? "hidden" : "mt-3 sm:mt-0"
-                    )}
-                    onClick={() => {
-                      const email =
-                        form.getValues(`steps.${step.stepNumber - 1}.sendTo`) ||
-                        "";
-                      sendEmailVerificationCodeMutation.mutate({
-                        email,
-                        isVerifyingEmail: true,
-                        language: i18n.language || "en",
-                      });
-                    }}
-                  >
-                    {t("send_code")}
-                  </Button>
-                </div>
-                {form.formState.errors.steps &&
-                  form.formState?.errors?.steps[step.stepNumber - 1]
-                    ?.sendTo && (
-                    <p className="text-error mt-1 text-xs">
-                      {form.formState?.errors?.steps[step.stepNumber - 1]
-                        ?.sendTo?.message || ""}
-                    </p>
+                <Button
+                  color="secondary"
+                  size="sm"
+                  disabled={emailVerified || props.readOnly || false}
+                  className={classNames(
+                    "min-w-fit text-sm font-medium",
+                    emailVerified ? "hidden" : "mt-3 sm:mt-0"
                   )}
-                {emailVerified ? (
-                  <div className="mt-1">
-                    <Badge variant="green">{t("email_verified")}</Badge>
-                  </div>
-                ) : (
-                  !props.readOnly && (
-                    <>
-                      <div className="mt-3 flex w-full flex-col">
-                        <Label className="">{t("verification_code")}</Label>
-                        <div className="flex w-full items-center">
-                          <TextField
-                            containerClassName="w-full"
-                            className="h-8 rounded-xl"
-                            placeholder={t("code")}
-                            disabled={props.readOnly}
-                            value={verificationCode}
-                            onChange={(e) => {
-                              setVerificationCode(e.target.value);
-                            }}
-                            required
-                          />
-                          <Button
-                            color="secondary"
-                            size="sm"
-                            className="ml-2 min-w-fit rounded-[10px]"
-                            disabled={verifyEmailCodeMutation.isPending || props.readOnly}
-                            onClick={() => {
-                              verifyEmailCodeMutation.mutate({
-                                code: verificationCode,
-                                email: form.getValues(`steps.${step.stepNumber - 1}.sendTo`) || "",
-                                teamId,
-                              });
-                            }}>
-                            {t("verify")}
-                          </Button>
-                        </div>
-                      </div>
-                      {form.formState.errors.steps &&
-                        form.formState?.errors?.steps[step.stepNumber - 1]?.sendTo && (
-                          <p className="text-error mt-1 text-xs">
-                            {form.formState?.errors?.steps[step.stepNumber - 1]?.sendTo?.message || ""}
-                          </p>
-                        )}
-                    </>
-                  )
-                )}
+                  onClick={() => {
+                    const email = form.getValues(`steps.${step.stepNumber - 1}.sendTo`) || "";
+                    sendEmailVerificationCodeMutation.mutate({
+                      email,
+                      isVerifyingEmail: true,
+                      language: i18n.language || "en",
+                    });
+                  }}>
+                  {t("send_code")}
+                </Button>
               </div>
-            )}
+              {form.formState.errors.steps && form.formState?.errors?.steps[step.stepNumber - 1]?.sendTo && (
+                <p className="text-error mt-1 text-xs">
+                  {form.formState?.errors?.steps[step.stepNumber - 1]?.sendTo?.message || ""}
+                </p>
+              )}
+              {emailVerified ? (
+                <div className="mt-1">
+                  <Badge variant="green">{t("email_verified")}</Badge>
+                </div>
+              ) : (
+                !props.readOnly && (
+                  <>
+                    <div className="mt-3 flex w-full flex-col">
+                      <Label className="">{t("verification_code")}</Label>
+                      <div className="flex w-full items-center">
+                        <TextField
+                          containerClassName="w-full"
+                          className="h-8 rounded-xl"
+                          placeholder={t("code")}
+                          disabled={props.readOnly}
+                          value={verificationCode}
+                          onChange={(e) => {
+                            setVerificationCode(e.target.value);
+                          }}
+                          required
+                        />
+                        <Button
+                          color="secondary"
+                          size="sm"
+                          className="ml-2 min-w-fit rounded-[10px]"
+                          disabled={verifyEmailCodeMutation.isPending || props.readOnly}
+                          onClick={() => {
+                            verifyEmailCodeMutation.mutate({
+                              code: verificationCode,
+                              email: form.getValues(`steps.${step.stepNumber - 1}.sendTo`) || "",
+                              teamId,
+                            });
+                          }}>
+                          {t("verify")}
+                        </Button>
+                      </div>
+                    </div>
+                    {form.formState.errors.steps &&
+                      form.formState?.errors?.steps[step.stepNumber - 1]?.sendTo && (
+                        <p className="text-error mt-1 text-xs">
+                          {form.formState?.errors?.steps[step.stepNumber - 1]?.sendTo?.message || ""}
+                        </p>
+                      )}
+                  </>
+                )
+              )}
+            </div>
+          )}
           <div className="mt-3">
             <Label>{t("message_template")}</Label>
             <Controller
@@ -947,9 +923,7 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
                         label: option.label,
                         value: option.value,
                         needsTeamsUpgrade,
-                        upgradeTeamsBadgeProps: needsTeamsUpgrade
-                          ? option.upgradeTeamsBadgeProps
-                          : undefined,
+                        upgradeTeamsBadgeProps: needsTeamsUpgrade ? option.upgradeTeamsBadgeProps : undefined,
                       };
                     })}
                     isOptionDisabled={(option: {
@@ -963,96 +937,119 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
             />
           </div>
           <div className="bg-cal-muted border-muted mt-3 rounded-2xl border py-1 px-3">
-              {isEmailSubjectNeeded && (
-                <div className="mb-6">
-                  <div className="flex items-center">
-                    <Label
-                      className={classNames(
-                        "flex-none",
-                        props.readOnly || isFormTrigger(trigger) ? "mb-2" : "mb-0"
-                      )}>
-                      {t("email_subject")}
-                    </Label>
-                    {!props.readOnly && !isFormTrigger(trigger) && (
-                      <div className="grow text-right">
-                        <AddVariablesDropdown
-                          addVariable={addVariableEmailSubject}
-                          variables={DYNAMIC_TEXT_VARIABLES}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <TextArea
-                    ref={(e) => {
-                      emailSubjectFormRef?.(e);
-                      refEmailSubject.current = e;
-                    }}
-                    rows={2}
-                    disabled={props.readOnly || !hasActiveTeamPlan}
-                    className="my-0 focus:ring-transparent"
-                    required
-                    {...restEmailSubjectForm}
-                  />
-                  {form.formState.errors.steps &&
-                    form.formState?.errors?.steps[step.stepNumber - 1]?.emailSubject && (
-                      <p className="text-error mt-1 text-xs">
-                        {form.formState?.errors?.steps[step.stepNumber - 1]?.emailSubject?.message || ""}
-                      </p>
-                    )}
+            {isEmailSubjectNeeded && (
+              <div className="mb-6">
+                <div className="flex items-center">
+                  <Label
+                    className={classNames(
+                      "flex-none",
+                      props.readOnly || isFormTrigger(trigger) ? "mb-2" : "mb-0"
+                    )}>
+                    {t("email_subject")}
+                  </Label>
+                  {!props.readOnly && !isFormTrigger(trigger) && (
+                    <div className="grow text-right">
+                      <AddVariablesDropdown
+                        addVariable={addVariableEmailSubject}
+                        variables={DYNAMIC_TEXT_VARIABLES}
+                      />
+                    </div>
+                  )}
                 </div>
-              )}
-              <div className="mb-2 flex items-center pb-1">
-                <Label className="mb-0 flex-none">
-                  {isEmailSubjectNeeded ? t("email_body") : t("text_message")}
-                </Label>
+                <TextArea
+                  ref={(e) => {
+                    emailSubjectFormRef?.(e);
+                    refEmailSubject.current = e;
+                  }}
+                  rows={2}
+                  disabled={props.readOnly || !hasActiveTeamPlan}
+                  className="my-0 focus:ring-transparent"
+                  required
+                  {...restEmailSubjectForm}
+                />
+                {form.formState.errors.steps &&
+                  form.formState?.errors?.steps[step.stepNumber - 1]?.emailSubject && (
+                    <p className="text-error mt-1 text-xs">
+                      {form.formState?.errors?.steps[step.stepNumber - 1]?.emailSubject?.message || ""}
+                    </p>
+                  )}
               </div>
-              <Editor
-                getText={() => props.form.getValues(`steps.${step.stepNumber - 1}.reminderBody`) || ""}
-                setText={(text: string) => {
-                  props.form.setValue(`steps.${step.stepNumber - 1}.reminderBody`, text, {
-                    shouldDirty: true,
-                  });
-                  props.form.clearErrors();
-                }}
-                variables={!isFormTrigger(trigger) ? DYNAMIC_TEXT_VARIABLES : undefined}
-                addVariableButtonTop={isSMSAction(step.action)}
-                height="200px"
-                updateTemplate={updateTemplate}
-                firstRender={firstRender}
-                setFirstRender={setFirstRender}
-                editable={
-                  !props.readOnly &&
-                  !isWhatsappAction(step.action) &&
-                  (hasActiveTeamPlan || isSMSAction(step.action))
-                }
-                excludedToolbarItems={
-                  !isSMSAction(step.action) ? [] : ["blockType", "bold", "italic", "link"]
-                }
-                plainText={isSMSAction(step.action)}
-              />
+            )}
+            <div className="mb-2 flex items-center pb-1">
+              <Label className="mb-0 flex-none">
+                {isEmailSubjectNeeded ? t("email_body") : t("text_message")}
+              </Label>
+            </div>
+            <Editor
+              getText={() => props.form.getValues(`steps.${step.stepNumber - 1}.reminderBody`) || ""}
+              setText={(text: string) => {
+                props.form.setValue(`steps.${step.stepNumber - 1}.reminderBody`, text, {
+                  shouldDirty: true,
+                });
+                props.form.clearErrors();
+              }}
+              variables={!isFormTrigger(trigger) ? DYNAMIC_TEXT_VARIABLES : undefined}
+              addVariableButtonTop={isSMSAction(step.action)}
+              height="200px"
+              updateTemplate={updateTemplate}
+              firstRender={firstRender}
+              setFirstRender={setFirstRender}
+              editable={
+                !props.readOnly &&
+                !isWhatsappAction(step.action) &&
+                (hasActiveTeamPlan || isSMSAction(step.action))
+              }
+              excludedToolbarItems={!isSMSAction(step.action) ? [] : ["blockType", "bold", "italic", "link"]}
+              plainText={isSMSAction(step.action)}
+            />
 
-              {form.formState.errors.steps &&
-                form.formState?.errors?.steps[step.stepNumber - 1]?.reminderBody && (
-                  <p className="text-error mt-1 text-sm">
-                    {form.formState?.errors?.steps[step.stepNumber - 1]?.reminderBody?.message || ""}
-                  </p>
-                )}
-              {isEmailSubjectNeeded && trigger !== WorkflowTriggerEvents.BOOKING_REQUESTED && (
-                <div className="mt-2">
+            {form.formState.errors.steps &&
+              form.formState?.errors?.steps[step.stepNumber - 1]?.reminderBody && (
+                <p className="text-error mt-1 text-sm">
+                  {form.formState?.errors?.steps[step.stepNumber - 1]?.reminderBody?.message || ""}
+                </p>
+              )}
+            {isEmailSubjectNeeded && trigger !== WorkflowTriggerEvents.BOOKING_REQUESTED && (
+              <div className="mt-2">
+                <Controller
+                  name={`steps.${step.stepNumber - 1}.includeCalendarEvent`}
+                  control={form.control}
+                  render={() => (
+                    <CheckboxField
+                      disabled={props.readOnly}
+                      defaultChecked={
+                        form.getValues(`steps.${step.stepNumber - 1}.includeCalendarEvent`) || false
+                      }
+                      description={t("include_calendar_event")}
+                      descriptionClassName="ml-0"
+                      onChange={(e) =>
+                        form.setValue(`steps.${step.stepNumber - 1}.includeCalendarEvent`, e.target.checked, {
+                          shouldDirty: true,
+                        })
+                      }
+                    />
+                  )}
+                />
+              </div>
+            )}
+            {(step.action === WorkflowActions.EMAIL_ATTENDEE ||
+              step.action === WorkflowActions.SMS_ATTENDEE) && (
+              <div className="mt-2">
+                <div className="flex items-center gap-2">
                   <Controller
-                    name={`steps.${step.stepNumber - 1}.includeCalendarEvent`}
+                    name={`steps.${step.stepNumber - 1}.autoTranslateEnabled`}
                     control={form.control}
                     render={() => (
                       <CheckboxField
-                        disabled={props.readOnly}
+                        disabled={props.readOnly || !props.user.organizationId}
                         defaultChecked={
-                          form.getValues(`steps.${step.stepNumber - 1}.includeCalendarEvent`) || false
+                          form.getValues(`steps.${step.stepNumber - 1}.autoTranslateEnabled`) || false
                         }
-                        description={t("include_calendar_event")}
+                        description={t("auto_translate_for_attendees")}
                         descriptionClassName="ml-0"
                         onChange={(e) =>
                           form.setValue(
-                            `steps.${step.stepNumber - 1}.includeCalendarEvent`,
+                            `steps.${step.stepNumber - 1}.autoTranslateEnabled`,
                             e.target.checked,
                             { shouldDirty: true }
                           )
@@ -1060,66 +1057,39 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
                       />
                     )}
                   />
+                  {!props.user.organizationId && (
+                    <Badge variant="gray" size="sm">
+                      {t("upgrade_to_organizations")}
+                    </Badge>
+                  )}
                 </div>
-              )}
-              {(step.action === WorkflowActions.EMAIL_ATTENDEE ||
-                step.action === WorkflowActions.SMS_ATTENDEE) && (
-                <div className="mt-2">
-                  <div className="flex items-center gap-2">
-                    <Controller
-                      name={`steps.${step.stepNumber - 1}.autoTranslateEnabled`}
-                      control={form.control}
-                      render={() => (
-                        <CheckboxField
-                          disabled={props.readOnly || !props.user.organizationId}
-                          defaultChecked={
-                            form.getValues(`steps.${step.stepNumber - 1}.autoTranslateEnabled`) || false
-                          }
-                          description={t("auto_translate_for_attendees")}
-                          descriptionClassName="ml-0"
-                          onChange={(e) =>
-                            form.setValue(
-                              `steps.${step.stepNumber - 1}.autoTranslateEnabled`,
-                              e.target.checked,
-                              { shouldDirty: true }
-                            )
-                          }
-                        />
-                      )}
-                    />
-                    {!props.user.organizationId && (
-                      <Badge variant="gray" size="sm">
-                        {t("upgrade_to_organizations")}
-                      </Badge>
-                    )}
+                {props.user.organizationId &&
+                  form.watch(`steps.${step.stepNumber - 1}.autoTranslateEnabled`) && (
+                    <p className="text-subtle ml-6 mt-1 text-xs">
+                      {t("auto_translate_source_language_hint", {
+                        language: new Intl.DisplayNames([i18n.language], { type: "language" }).of(
+                          props.user.locale || "en"
+                        ),
+                      })}
+                    </p>
+                  )}
+              </div>
+            )}
+            {!props.readOnly && (
+              <div className="ml-1 mt-2">
+                <button type="button" onClick={() => setIsAdditionalInputsDialogOpen(true)}>
+                  <div className="text-subtle ml-1 flex items-center gap-2">
+                    <CircleHelpIcon className="h-3 w-3" />
+                    <p className="text-left text-xs">
+                      {isFormTrigger(trigger)
+                        ? t("using_form_responses_as_variables")
+                        : t("using_booking_questions_as_variables")}
+                    </p>
                   </div>
-                  {props.user.organizationId &&
-                    form.watch(`steps.${step.stepNumber - 1}.autoTranslateEnabled`) && (
-                      <p className="text-subtle ml-6 mt-1 text-xs">
-                        {t("auto_translate_source_language_hint", {
-                          language: new Intl.DisplayNames([i18n.language], { type: "language" }).of(
-                            props.user.locale || "en"
-                          ),
-                        })}
-                      </p>
-                    )}
-                </div>
-              )}
-              {!props.readOnly && (
-                <div className="ml-1 mt-2">
-                  <button type="button" onClick={() => setIsAdditionalInputsDialogOpen(true)}>
-                    <div className="text-subtle ml-1 flex items-center gap-2">
-                      <CircleHelpIcon className="h-3 w-3" />
-                      <p className="text-left text-xs">
-                        {isFormTrigger(trigger)
-                          ? t("using_form_responses_as_variables")
-                          : t("using_booking_questions_as_variables")}
-                      </p>
-                    </div>
-                  </button>
-                </div>
-              )}
-            </div>
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* {form.getValues(`steps.${step.stepNumber - 1}.action`) !== WorkflowActions.SMS_ATTENDEE && (
                 <Button
@@ -1286,9 +1256,7 @@ export default function WorkflowStepContainer(props: WorkflowStepProps) {
         <Dialog open={isDeleteStepDialogOpen} onOpenChange={setIsDeleteStepDialogOpen}>
           <DialogContent type="confirmation" title={t("delete_workflow_step")}>
             <div className="stack-y-4">
-              <p className="text-default text-sm">
-                {t("are_you_sure_you_want_to_delete_workflow_step")}
-              </p>
+              <p className="text-default text-sm">{t("are_you_sure_you_want_to_delete_workflow_step")}</p>
             </div>
             <DialogFooter showDivider>
               <Button type="button" color="secondary" onClick={() => setIsDeleteStepDialogOpen?.(false)}>

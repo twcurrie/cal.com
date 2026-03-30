@@ -1,9 +1,8 @@
-import { describe, expect, it, vi } from "vitest";
-
 import dayjs from "@calcom/dayjs";
 import { getCheckBookingLimitsService } from "@calcom/features/di/containers/BookingLimits";
 import type { IntervalLimit } from "@calcom/lib/intervalLimits/intervalLimitSchema";
 import { validateIntervalLimitOrder } from "@calcom/lib/intervalLimits/validateIntervalLimitOrder";
+import { describe, expect, it, vi } from "vitest";
 
 const mockCountBookingsByEventTypeAndDateRange = vi.fn();
 vi.mock("@calcom/features/bookings/repositories/BookingRepository", () => ({

@@ -1,14 +1,12 @@
 import type { IncomingMessage } from "node:http";
+import { trpc } from "@calcom/trpc/react";
+import { WebPushProvider } from "@calcom/web/modules/notifications/components/WebPushContext";
+import type { AppProps } from "@lib/app-providers";
+import { applyDailyColor } from "@lib/daily-color";
 import type { NextPageContext } from "next";
 import { SessionProvider } from "next-auth/react";
 import React, { useEffect } from "react";
 import CacheProvider from "react-inlinesvg/provider";
-
-import { WebPushProvider } from "@calcom/web/modules/notifications/components/WebPushContext";
-import { trpc } from "@calcom/trpc/react";
-
-import type { AppProps } from "@lib/app-providers";
-import { applyDailyColor } from "@lib/daily-color";
 
 import "../styles/globals.css";
 

@@ -1,8 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-
 import { getWebhookVersionDocsUrl, getWebhookVersionLabel } from "@calcom/features/webhooks/lib/constants";
 import type { Webhook } from "@calcom/features/webhooks/lib/dto/types";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -21,10 +18,11 @@ import {
 import { Switch } from "@calcom/ui/components/form";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
-import { ExternalLinkIcon } from "@coss/ui/icons";
 import { revalidateEventTypeEditPage } from "@calcom/web/app/(use-page-wrapper)/event-types/[type]/actions";
 import { revalidateWebhooksList } from "@calcom/web/app/(use-page-wrapper)/settings/(settings-layout)/developer/webhooks/(with-loader)/actions";
-
+import { ExternalLinkIcon } from "@coss/ui/icons";
+import Link from "next/link";
+import { useState } from "react";
 import { DeleteWebhookDialog } from "./dialogs/DeleteWebhookDialog";
 
 const MAX_BADGES_TWO_ROWS = 8; // Approximately 2 rows of badges

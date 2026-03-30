@@ -1,8 +1,6 @@
-import type { TFunction } from "i18next";
-
 import type { TimeFormat } from "@calcom/lib/timeFormat";
-import { WorkflowActions, WorkflowTemplates, WorkflowTriggerEvents } from "@calcom/prisma/enums";
-
+import { WorkflowActions, WorkflowTemplates, type WorkflowTriggerEvents } from "@calcom/prisma/enums";
+import type { TFunction } from "i18next";
 import {
   whatsappEventCancelledTemplate,
   whatsappEventCompletedTemplate,
@@ -165,4 +163,3 @@ export function getTemplateSubjectForAction({
 export function isFormTrigger(trigger: WorkflowTriggerEvents) {
   return FORM_TRIGGER_WORKFLOW_EVENTS.includes(trigger);
 }
-

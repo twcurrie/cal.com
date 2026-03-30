@@ -1,17 +1,16 @@
 import type {
-  OutputOrganizersDefaultAppLocation_2024_06_14,
-  OutputIntegration_2024_06_14,
-  OutputIntegrationLocation_2024_06_14,
   OutputAddressLocation_2024_06_14,
   OutputAttendeeAddressLocation_2024_06_14,
   OutputAttendeeDefinedLocation_2024_06_14,
   OutputAttendeePhoneLocation_2024_06_14,
+  OutputIntegration_2024_06_14,
+  OutputIntegrationLocation_2024_06_14,
   OutputLinkLocation_2024_06_14,
+  OutputLocation_2024_06_14,
+  OutputOrganizersDefaultAppLocation_2024_06_14,
   OutputPhoneLocation_2024_06_14,
   OutputUnknownLocation_2024_06_14,
-  OutputLocation_2024_06_14,
 } from "@calcom/platform-types";
-
 import type { InternalLocation } from "../internal/locations";
 
 const internalToApiIntegrationsMapping: Record<string, OutputIntegration_2024_06_14> = {
@@ -43,7 +42,6 @@ const internalToApiIntegrationsMapping: Record<string, OutputIntegration_2024_06
   "integrations:eightxeight_video": "eightxeight-video",
   "integrations:discord_video": "discord-video",
   "integrations:demodesk_video": "demodesk-video",
-  "integrations:campfire_video": "campfire-video",
 };
 
 export function transformLocationsInternalToApi(internalLocations: InternalLocation[] | undefined) {

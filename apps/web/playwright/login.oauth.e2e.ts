@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-
 import { IS_GOOGLE_LOGIN_ENABLED, IS_SAML_LOGIN_ENABLED } from "../server/lib/constants";
 
 test("Should display Google Login button", async ({ page }) => {

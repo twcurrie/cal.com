@@ -1,10 +1,8 @@
 "use client";
 
+import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { ShellMainAppDir } from "app/(use-page-wrapper)/(main-nav)/ShellMainAppDir";
 import { TeamsCTA } from "app/(use-page-wrapper)/(main-nav)/teams/CTA";
-
-import { useLocale } from "@calcom/lib/hooks/useLocale";
-
 import SkeletonLoaderTeamList from "~/ee/teams/components/SkeletonloaderTeamList";
 
 export const TeamsListSkeleton = () => {

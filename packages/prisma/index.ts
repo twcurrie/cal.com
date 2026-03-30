@@ -1,11 +1,11 @@
+import process from "node:process";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
-
 import { bookingIdempotencyKeyExtension } from "./extensions/booking-idempotency-key";
 import { disallowUndefinedDeleteUpdateManyExtension } from "./extensions/disallow-undefined-delete-update-many";
 import { excludeLockedUsersExtension } from "./extensions/exclude-locked-users";
 import { excludePendingPaymentsExtension } from "./extensions/exclude-pending-payment-teams";
-import { PrismaClient, type Prisma } from "./generated/prisma/client";
+import { type Prisma, PrismaClient } from "./generated/prisma/client";
 
 const connectionString = process.env.DATABASE_URL || "";
 const pool =

@@ -5,7 +5,6 @@ import { IS_SELF_HOSTED } from "@calcom/lib/constants";
 import { prisma } from "@calcom/prisma";
 import type { Prisma } from "@calcom/prisma/client";
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
-
 import type { THasActiveTeamPlanInputSchema } from "./hasActiveTeamPlan.schema";
 
 type HasActiveTeamPlanOptions = {

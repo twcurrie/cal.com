@@ -1,5 +1,4 @@
 import { APP_NAME, SENDER_NAME, SUPPORT_MAIL_ADDRESS } from "@calcom/lib/constants";
-
 import type { EmailVerifyCode } from "../../lib/types/email-types";
 import { BaseEmailHtml } from "../components";
 

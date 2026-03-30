@@ -1,9 +1,7 @@
 import prismaMock from "@calcom/testing/lib/__mocks__/prismaMock";
-
-import { describe, it, expect, beforeEach, vi } from "vitest";
-
+import process from "node:process";
 import { WorkflowActions, WorkflowMethods, WorkflowTemplates } from "@calcom/prisma/enums";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { handler } from "./scheduleSMSReminders";
 
 const mockScheduleSmsOrFallbackEmail = vi.fn();
@@ -54,11 +52,13 @@ vi.mock("@calcom/features/ee/organizations/lib/getBookerUrlServer", () => ({
 }));
 
 vi.mock("@calcom/ee/workflows/lib/reminders/utils", () => ({
-  bulkShortenLinks: vi.fn().mockResolvedValue([
-    { shortLink: "https://short.link/meet" },
-    { shortLink: "https://short.link/cancel" },
-    { shortLink: "https://short.link/reschedule" },
-  ]),
+  bulkShortenLinks: vi
+    .fn()
+    .mockResolvedValue([
+      { shortLink: "https://short.link/meet" },
+      { shortLink: "https://short.link/cancel" },
+      { shortLink: "https://short.link/reschedule" },
+    ]),
 }));
 
 vi.mock("@calcom/i18n/server", () => ({
@@ -82,7 +82,10 @@ vi.mock("@calcom/features/ee/workflows/lib/getWorkflowReminders", () => ({
   getWorkflowRecipientEmail: vi.fn().mockReturnValue("attendee@example.com"),
 }));
 
-function createMockNextRequest(): { headers: { get: (key: string) => string | null }; nextUrl: { searchParams: { get: (key: string) => string | null } } } {
+function createMockNextRequest(): {
+  headers: { get: (key: string) => string | null };
+  nextUrl: { searchParams: { get: (key: string) => string | null } };
+} {
   return {
     headers: {
       get: (key: string) => (key === "authorization" ? "test-api-key" : null),

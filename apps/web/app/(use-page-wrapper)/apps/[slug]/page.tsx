@@ -7,7 +7,6 @@ import { z } from "zod";
 export const revalidate = 3600;
 
 import { getStaticProps } from "@lib/apps/[slug]/getStaticProps";
-
 import AppView from "~/apps/[slug]/slug-view";
 
 const paramsSchema = z.object({

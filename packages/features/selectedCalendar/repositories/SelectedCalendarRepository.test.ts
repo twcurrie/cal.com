@@ -6,7 +6,7 @@ import type { PrismaClient } from "@calcom/prisma";
 import prisma from "@calcom/prisma";
 import type { Prisma, SelectedCalendar } from "@calcom/prisma/client";
 import { MembershipRole } from "@calcom/prisma/enums";
-import { beforeEach, describe, expect, test, vi, it } from "vitest";
+import { beforeEach, describe, expect, it, test, vi } from "vitest";
 
 const mockPrismaClient = {
   selectedCalendar: {

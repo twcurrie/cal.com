@@ -1,10 +1,6 @@
-import Link from "next/link";
-import { useState } from "react";
-import { useFormContext } from "react-hook-form";
-
 import { Dialog } from "@calcom/features/components/controlled-dialog";
 import useLockedFieldsManager from "@calcom/features/ee/managed-event-types/hooks/useLockedFieldsManager";
-import type { FormValues, EventTypeSetupProps } from "@calcom/features/eventtypes/lib/types";
+import type { EventTypeSetupProps, FormValues } from "@calcom/features/eventtypes/lib/types";
 import { subscriberUrlReserved } from "@calcom/features/webhooks/lib/subscriberUrlReserved";
 import ServerTrans from "@calcom/lib/components/ServerTrans";
 import { APP_NAME } from "@calcom/lib/constants";
@@ -16,7 +12,9 @@ import { DialogContent } from "@calcom/ui/components/dialog";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
 import { showToast } from "@calcom/ui/components/toast";
 import { revalidateEventTypeEditPage } from "@calcom/web/app/(use-page-wrapper)/event-types/[type]/actions";
-
+import Link from "next/link";
+import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { WebhookForm } from "~/webhooks/components";
 import EventTypeWebhookListItem from "~/webhooks/components/EventTypeWebhookListItem";
 import type { TWebhook, WebhookFormSubmitData } from "~/webhooks/components/WebhookForm";

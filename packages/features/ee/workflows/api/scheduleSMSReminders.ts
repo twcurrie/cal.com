@@ -1,7 +1,6 @@
 /* Schedule any workflow reminder that falls within the next 2 hours for SMS */
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
 
+import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { bulkShortenLinks } from "@calcom/ee/workflows/lib/reminders/utils";
 import { getCalEventResponses } from "@calcom/features/bookings/lib/getCalEventResponses";
@@ -15,10 +14,11 @@ import { getTimeFormatStringFromUserTimeFormat } from "@calcom/lib/timeFormat";
 import prisma from "@calcom/prisma";
 import { WorkflowActions, WorkflowMethods, WorkflowTemplates } from "@calcom/prisma/enums";
 import { bookingMetadataSchema } from "@calcom/prisma/zod-utils";
-
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { getSenderId } from "../lib/alphanumericSenderIdSupport";
 import type { PartialWorkflowReminder } from "../lib/getWorkflowReminders";
-import { select, getWorkflowRecipientEmail } from "../lib/getWorkflowReminders";
+import { getWorkflowRecipientEmail, select } from "../lib/getWorkflowReminders";
 import type { VariablesType } from "../lib/reminders/templates/customTemplate";
 import customTemplate from "../lib/reminders/templates/customTemplate";
 import smsReminderTemplate from "../lib/reminders/templates/smsReminderTemplate";

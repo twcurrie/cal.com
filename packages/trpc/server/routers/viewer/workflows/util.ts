@@ -1,5 +1,3 @@
-import type { z } from "zod";
-
 import { isSMSOrWhatsappAction } from "@calcom/ee/workflows/lib/actionHelperFunctions";
 import emailRatingTemplate from "@calcom/ee/workflows/lib/reminders/templates/emailRatingTemplate";
 import emailReminderTemplate from "@calcom/ee/workflows/lib/reminders/templates/emailReminderTemplate";
@@ -8,15 +6,14 @@ import {
   getSmsReminderNumberSource,
 } from "@calcom/features/bookings/lib/getBookingFields";
 import { removeBookingField, upsertBookingField } from "@calcom/features/eventtypes/lib/bookingFieldsManager";
+import { getTranslation } from "@calcom/i18n/server";
 import { SMS_REMINDER_NUMBER_FIELD } from "@calcom/lib/bookings/SystemField";
 import { SENDER_ID, SENDER_NAME } from "@calcom/lib/constants";
-import { getTranslation } from "@calcom/i18n/server";
 import { getTimeFormatStringFromUserTimeFormat } from "@calcom/lib/timeFormat";
 import prisma from "@calcom/prisma";
 import type { WorkflowStep } from "@calcom/prisma/client";
-import { WorkflowTemplates } from "@calcom/prisma/enums";
-import { WorkflowActions } from "@calcom/prisma/enums";
-
+import { type WorkflowActions, WorkflowTemplates } from "@calcom/prisma/enums";
+import type { z } from "zod";
 import type { ZWorkflows } from "./getAllActiveWorkflows.schema";
 
 export function getSender(
@@ -96,7 +93,6 @@ export async function removeSmsReminderFieldForEventType({
     eventTypeId
   );
 }
-
 
 async function getAllUserAndTeamEventTypes(teamIds: number[], notMemberOfTeamId: number[] = []) {
   const teamMembersWithEventTypes = await prisma.membership.findMany({

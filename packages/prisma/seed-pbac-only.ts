@@ -1,5 +1,6 @@
 #!/usr/bin/env tsx
 
+import process from "node:process";
 /**
  * Standalone script to create a PBAC-enabled organization with custom roles
  * Run with: npx tsx packages/prisma/seed-pbac-only.ts

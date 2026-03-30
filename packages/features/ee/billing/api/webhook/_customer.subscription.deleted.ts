@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { LazyModule, SWHMap } from "./__handler";
 
 type Data = SWHMap["customer.subscription.deleted"]["data"];

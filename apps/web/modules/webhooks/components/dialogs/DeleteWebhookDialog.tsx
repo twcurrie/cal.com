@@ -1,6 +1,6 @@
 import { APP_NAME } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { Dialog, ConfirmationDialogContent } from "@calcom/ui/components/dialog";
+import { ConfirmationDialogContent, Dialog } from "@calcom/ui/components/dialog";
 
 interface DeleteWebhookDialogProps {
   open: boolean;

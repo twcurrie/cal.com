@@ -1,8 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
-
 import dayjs from "@calcom/dayjs";
 import { checkDurationLimit, checkDurationLimits } from "@calcom/features/bookings/lib/checkDurationLimits";
 import { validateIntervalLimitOrder } from "@calcom/lib/intervalLimits/validateIntervalLimitOrder";
+import { describe, expect, it, vi } from "vitest";
 
 const mockGetTotalBookingDuration = vi.fn();
 vi.mock("@calcom/features/bookings/repositories/BookingRepository", () => ({

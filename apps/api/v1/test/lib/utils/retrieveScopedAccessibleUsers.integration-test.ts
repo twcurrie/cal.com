@@ -1,7 +1,5 @@
-import { describe, it, expect, beforeAll } from "vitest";
-
 import prisma from "@calcom/prisma";
-
+import { beforeAll, describe, expect, it } from "vitest";
 import {
   getAccessibleUsers,
   retrieveOrgScopedAccessibleUsers,

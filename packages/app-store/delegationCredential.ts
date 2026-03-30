@@ -2,7 +2,17 @@ import { getCalendar } from "@calcom/app-store/_utils/getCalendar";
 import { metadata as googleCalendarMetadata } from "@calcom/app-store/googlecalendar/_metadata";
 import { metadata as googleMeetMetadata } from "@calcom/app-store/googlevideo/_metadata";
 import { metadata as office365CalendarMetaData } from "@calcom/app-store/office365calendar/_metadata";
-import { metadata as office365VideoMetaData } from "@calcom/app-store/office365video/_metadata";
+
+const office365VideoMetaData = {
+  type: "office365_video",
+  slug: "office365video",
+  appData: {
+    location: {
+      type: "integrations:office365_video",
+    },
+  },
+};
+
 import { CredentialRepository } from "@calcom/features/credentials/repositories/CredentialRepository";
 import type { ServiceAccountKey } from "@calcom/features/delegation-credentials/repositories/DelegationCredentialRepository";
 import { DelegationCredentialRepository } from "@calcom/features/delegation-credentials/repositories/DelegationCredentialRepository";

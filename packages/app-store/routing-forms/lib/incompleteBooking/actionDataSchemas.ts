@@ -1,10 +1,9 @@
+import type { IncompleteBookingActionType } from "@calcom/prisma/enums";
 import type { z } from "zod";
 
-import { routingFormIncompleteBookingDataSchema as salesforceRoutingFormIncompleteBookingDataSchema } from "@calcom/app-store/salesforce/zod";
-import { IncompleteBookingActionType } from "@calcom/prisma/enums";
-
-const incompleteBookingActionDataSchemas: Record<IncompleteBookingActionType, z.ZodType<any>> = {
-  [IncompleteBookingActionType.SALESFORCE]: salesforceRoutingFormIncompleteBookingDataSchema,
-};
+const incompleteBookingActionDataSchemas: Record<IncompleteBookingActionType, z.ZodTypeAny> = {} as Record<
+  IncompleteBookingActionType,
+  z.ZodTypeAny
+>;
 
 export default incompleteBookingActionDataSchemas;

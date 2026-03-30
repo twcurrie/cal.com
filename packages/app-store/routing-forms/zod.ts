@@ -1,6 +1,5 @@
 import { raqbQueryValueSchema } from "@calcom/lib/raqb/zod";
 import { z } from "zod";
-import { routingFormAppDataSchemas } from "./appDataSchemas";
 
 export {
   type FieldOption,
@@ -55,7 +54,6 @@ export const routeActionTypeSchema = z.nativeEnum(RouteActionType);
 export const attributeRoutingConfigSchema = z
   .object({
     skipContactOwner: z.boolean().optional(),
-    salesforce: routingFormAppDataSchemas["salesforce"],
   })
   .nullish();
 

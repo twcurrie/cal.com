@@ -1,24 +1,13 @@
-import { calendar_v3 } from "@googleapis/calendar";
-import { waitUntil } from "@vercel/functions";
-import { OAuth2Client } from "googleapis-common";
-import type { AuthOptions, Account, Session, User } from "next-auth";
-import type { JWT } from "next-auth/jwt";
-import { encode } from "next-auth/jwt";
-import type { Provider } from "next-auth/providers";
-import CredentialsProvider from "next-auth/providers/credentials";
-import EmailProvider from "next-auth/providers/email";
-import GoogleProvider from "next-auth/providers/google";
-
+import process from "node:process";
 import { updateProfilePhotoGoogle } from "@calcom/app-store/_utils/oauth/updateProfilePhotoGoogle";
 import {
   createGoogleCalendarServiceWithGoogleType,
   type GoogleCalendar,
 } from "@calcom/app-store/googlecalendar/lib/CalendarService";
 import { LicenseKeySingleton } from "@calcom/ee/common/server/LicenseKeyService";
-import { getBillingProviderService } from "@calcom/features/ee/billing/di/containers/Billing";
 import { CredentialRepository } from "@calcom/features/credentials/repositories/CredentialRepository";
 import { buildCredentialCreateData } from "@calcom/features/credentials/services/CredentialDataService";
-import type { TrackingData } from "@calcom/lib/tracking";
+import { getBillingProviderService } from "@calcom/features/ee/billing/di/containers/Billing";
 import { DeploymentRepository } from "@calcom/features/ee/deployment/repositories/DeploymentRepository";
 import createUsersAndConnectToOrg from "@calcom/features/ee/dsync/lib/users/createUsersAndConnectToOrg";
 import ImpersonationProvider from "@calcom/features/ee/impersonation/lib/ImpersonationProvider";
@@ -30,12 +19,14 @@ import { UserRepository } from "@calcom/features/users/repositories/UserReposito
 import { isPasswordValid } from "@calcom/lib/auth/isPasswordValid";
 import { checkRateLimitAndThrowError } from "@calcom/lib/checkRateLimitAndThrowError";
 import {
+  ENABLE_PROFILE_SWITCHER,
   GOOGLE_CALENDAR_SCOPES,
   GOOGLE_OAUTH_SCOPES,
   HOSTED_CAL_FEATURES,
   IS_CALCOM,
+  IS_TEAM_BILLING_ENABLED,
+  WEBAPP_URL,
 } from "@calcom/lib/constants";
-import { ENABLE_PROFILE_SWITCHER, IS_TEAM_BILLING_ENABLED, WEBAPP_URL } from "@calcom/lib/constants";
 import { symmetricDecrypt, symmetricEncrypt } from "@calcom/lib/crypto";
 import { defaultCookies } from "@calcom/lib/default-cookies";
 import { isENVDev } from "@calcom/lib/env";
@@ -44,19 +35,28 @@ import { randomString } from "@calcom/lib/random";
 import { safeStringify } from "@calcom/lib/safeStringify";
 import { hashEmail } from "@calcom/lib/server/PiiHasher";
 import slugify from "@calcom/lib/slugify";
+import type { TrackingData } from "@calcom/lib/tracking";
 import prisma from "@calcom/prisma";
 import type { Membership, Team } from "@calcom/prisma/client";
-import { CreationSource } from "@calcom/prisma/enums";
-import { IdentityProvider, MembershipRole, UserPermissionRole } from "@calcom/prisma/enums";
+import { CreationSource, IdentityProvider, MembershipRole, UserPermissionRole } from "@calcom/prisma/enums";
 import { teamMetadataSchema, userMetadata } from "@calcom/prisma/zod-utils";
-
+import type { UserProfile } from "@calcom/types/UserProfile";
+import { calendar_v3 } from "@googleapis/calendar";
+import { waitUntil } from "@vercel/functions";
+import { OAuth2Client } from "googleapis-common";
+import type { Account, AuthOptions, Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import { encode } from "next-auth/jwt";
+import type { Provider } from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
+import GoogleProvider from "next-auth/providers/google";
 import { getOrgUsernameFromEmail } from "../signup/utils/getOrgUsernameFromEmail";
-import { ErrorCode } from "./ErrorCode";
 import { dub } from "./dub";
-import { validateSamlAccountConversion } from "./samlAccountLinking";
+import { ErrorCode } from "./ErrorCode";
 import CalComAdapter from "./next-auth-custom-adapter";
+import { validateSamlAccountConversion } from "./samlAccountLinking";
 import { verifyPassword } from "./verifyPassword";
-import { UserProfile } from "@calcom/types/UserProfile";
 
 type UserWithProfiles = NonNullable<
   Awaited<ReturnType<UserRepository["findByEmailAndIncludeProfilesAndPassword"]>>
@@ -505,7 +505,7 @@ export const getOptions = ({
   getTrackingData: () => TrackingData;
 }): AuthOptions => ({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error
   adapter: calcomAdapter,
   session: {
     strategy: "jwt",
@@ -890,7 +890,7 @@ export const getOptions = ({
       if (account?.provider) {
         const idP: IdentityProvider = mapIdentityProvider(account.provider);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore-error TODO validate email_verified key on profile
+        // @ts-expect-error-error TODO validate email_verified key on profile
         user.email_verified = user.email_verified || !!user.emailVerified || profile.email_verified;
 
         if (!user.email_verified) {

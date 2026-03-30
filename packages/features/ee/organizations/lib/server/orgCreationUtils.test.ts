@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-
 import { isNotACompanyEmail } from "./orgCreationUtils";
 
 describe("orgCreationUtils", () => {

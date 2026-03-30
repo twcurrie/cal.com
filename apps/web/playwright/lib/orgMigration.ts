@@ -7,8 +7,8 @@ import { safeStringify } from "@calcom/lib/safeStringify";
 import prisma from "@calcom/prisma";
 import type { Team, User } from "@calcom/prisma/client";
 import { Prisma } from "@calcom/prisma/client";
-import { RedirectType } from "@calcom/prisma/enums";
 import type { MembershipRole } from "@calcom/prisma/enums";
+import { RedirectType } from "@calcom/prisma/enums";
 import { teamMetadataSchema, teamMetadataStrictSchema } from "@calcom/prisma/zod-utils";
 
 const log = logger.getSubLogger({ prefix: ["orgMigration"] });
@@ -26,7 +26,7 @@ type UserMetadata = {
  * Make sure that the migration is idempotent
  */
 export async function moveUserToOrg({
-  user: { id: userId, userName: userName },
+  user: { id: userId, userName },
   targetOrg: {
     id: targetOrgId,
     username: targetOrgUsername,
@@ -429,7 +429,7 @@ async function dbMoveUserToOrg({
       username: targetOrgUsername,
       metadata: {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error
         ...(userToMoveToOrg.metadata || {}),
         migratedToOrgFrom: {
           username: nonOrgUserName,
@@ -688,7 +688,7 @@ async function dbRemoveUserFromOrg({
       username: nonOrgUserName,
       metadata: {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error
         ...(userToRemoveFromOrg.metadata || {}),
         migratedToOrgFrom: {
           username: null,
