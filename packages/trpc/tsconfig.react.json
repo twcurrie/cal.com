@@ -12,6 +12,7 @@
   "exclude": ["**/node_modules/**", "./server", "./react/**/*.test.ts", "./react/**/*.spec.ts"],
   "compilerOptions": {
     "isolatedModules": false,
+    "downlevelIteration": true,
     "noEmit": false,
     "declaration": true,
     "emitDeclarationOnly": true,
