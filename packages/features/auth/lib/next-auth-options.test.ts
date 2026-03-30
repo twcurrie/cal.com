@@ -1,8 +1,6 @@
-import type { User } from "next-auth";
-import { describe, expect, it, vi, beforeEach } from "vitest";
-
 import { IdentityProvider, UserPermissionRole } from "@calcom/prisma/enums";
-
+import type { User } from "next-auth";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ErrorCode } from "./ErrorCode";
 
 // Mock dependencies

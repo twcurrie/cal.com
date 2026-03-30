@@ -1,8 +1,7 @@
 // or wherever it's from
-import { vi, describe, it, expect, beforeEach } from "vitest";
 
 import { SchedulingType } from "@calcom/prisma/enums";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildEventForTeamEventType } from "../../service/RegularBookingService";
 
 vi.mock("@calcom/i18n/server", () => ({

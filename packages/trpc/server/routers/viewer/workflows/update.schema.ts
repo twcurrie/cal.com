@@ -1,13 +1,12 @@
-import { z } from "zod";
-
 import { isFormTrigger } from "@calcom/features/ee/workflows/lib/actionHelperFunctions";
 import {
-  WORKFLOW_TEMPLATES,
+  ALLOWED_FORM_WORKFLOW_ACTIONS,
   TIME_UNIT,
   WORKFLOW_ACTIONS,
+  WORKFLOW_TEMPLATES,
   WORKFLOW_TRIGGER_EVENTS,
-  ALLOWED_FORM_WORKFLOW_ACTIONS,
 } from "@calcom/features/ee/workflows/lib/constants";
+import { z } from "zod";
 
 const stepSchema = z.object({
   id: z.number(),
@@ -22,8 +21,6 @@ const stepSchema = z.object({
   sender: z.string().nullable(),
   senderName: z.string().nullable(),
   includeCalendarEvent: z.boolean(),
-  agentId: z.string().nullish(),
-  inboundAgentId: z.string().nullish(),
   autoTranslateEnabled: z.boolean().optional(),
   sourceLocale: z.string().nullish(),
 });

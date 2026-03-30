@@ -16,7 +16,6 @@ import { SkeletonLoader } from "@calcom/web/modules/apps/components/SkeletonLoad
 import { SelectedCalendarsSettingsWebWrapper } from "@calcom/web/modules/calendars/components/SelectedCalendarsSettingsWebWrapper";
 import SubHeadingTitleWithConnections from "@components/integrations/SubHeadingTitleWithConnections";
 import useRouterQuery from "@lib/hooks/useRouterQuery";
-
 import { QueryCell } from "@lib/QueryCell";
 import { Suspense, useEffect } from "react";
 import { DestinationCalendarSettingsWebWrapper } from "./DestinationCalendarSettingsWebWrapper";

@@ -978,6 +978,9 @@ Note: If you don't configure Unkey, Cal.com will work normally without rate limi
 15. Create a verify service
 16. Copy Verify Service SID to your `.env` file into the `TWILIO_VERIFY_SID` field
 
+## Setting up Proton Mail integration
+
+
 ## Changesets
 
 We use changesets to generate changelogs and publish public packages (packages with `private: true` are ignored).

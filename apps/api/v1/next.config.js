@@ -1,4 +1,6 @@
 /* eslint-disable */
+import process from "node:process";
+
 const { withAxiom } = require("next-axiom");
 const { withSentryConfig } = require("@sentry/nextjs");
 const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");

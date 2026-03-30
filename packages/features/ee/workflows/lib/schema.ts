@@ -1,8 +1,7 @@
-import { isValidPhoneNumber } from "libphonenumber-js/max";
-import { z } from "zod";
-
 import { TimeUnit, WorkflowActions, WorkflowTemplates, WorkflowTriggerEvents } from "@calcom/prisma/enums";
 import { stringOrNumber } from "@calcom/prisma/zod-utils";
+import { isValidPhoneNumber } from "libphonenumber-js/max";
+import { z } from "zod";
 
 export function onlyLettersNumbersSpaces(str: string) {
   if (str.length <= 11 && /^[A-Za-z0-9\s]*$/.test(str)) {
@@ -39,7 +38,6 @@ export const formSchema = z.object({
         .optional()
         .nullable(),
       senderName: z.string().nullish(),
-      agentId: z.string().nullish(),
       autoTranslateEnabled: z.boolean().optional(),
       sourceLocale: z.string().nullish(),
     })

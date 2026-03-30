@@ -2,7 +2,6 @@ import { PermissionCheckService } from "@calcom/features/pbac/services/permissio
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
 import type { PrismaClient } from "@calcom/prisma";
 import { MembershipRole } from "@calcom/prisma/enums";
-
 import { BookingRepository } from "../repositories/BookingRepository";
 
 type BookingForAccessCheck = NonNullable<Awaited<ReturnType<BookingRepository["findByUidIncludeEventType"]>>>;

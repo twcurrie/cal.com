@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react",
     "target": "ES2015",
+    "lib": ["ES2015", "ES2022.Object", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "moduleResolution": "Node",
     "baseUrl": ".",

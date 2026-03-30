@@ -2,7 +2,6 @@ import { BookingSeatRepository } from "@calcom/features/bookings/repositories/Bo
 import type { CreditCheckFn } from "@calcom/features/ee/billing/credit-service";
 import {
   isAttendeeAction,
-  isCalAIAction,
   isEmailAction,
   isSMSAction,
   isSMSOrWhatsappAction,
@@ -12,9 +11,9 @@ import { EmailWorkflowService } from "@calcom/features/ee/workflows/lib/service/
 import { WorkflowService } from "@calcom/features/ee/workflows/lib/service/WorkflowService";
 import type { Workflow, WorkflowStep } from "@calcom/features/ee/workflows/lib/types";
 import { WorkflowReminderRepository } from "@calcom/features/ee/workflows/repositories/WorkflowReminderRepository";
+import { getTranslation } from "@calcom/i18n/server";
 import { formatCalEventExtended } from "@calcom/lib/formatCalendarEvent";
 import { withReporting } from "@calcom/lib/sentryWrapper";
-import { getTranslation } from "@calcom/i18n/server";
 import { checkSMSRateLimit } from "@calcom/lib/smsLockState";
 import { prisma } from "@calcom/prisma";
 import { type SchedulingType, WorkflowActions, WorkflowTriggerEvents } from "@calcom/prisma/enums";
@@ -183,23 +182,6 @@ const processWorkflowStep = async (
       sourceLocale: step.sourceLocale,
       isVerificationPending: step.numberVerificationPending,
       evt,
-    });
-  } else if (isCalAIAction(step.action)) {
-    const { scheduleAIPhoneCall } = await import("./aiPhoneCallManager");
-    await scheduleAIPhoneCall({
-      triggerEvent: workflow.trigger,
-      timeSpan: {
-        time: workflow.time,
-        timeUnit: workflow.timeUnit,
-      },
-      workflowStepId: step.id,
-      userId: workflow.userId,
-      teamId: workflow.teamId,
-      seatReferenceUid,
-      submittedPhoneNumber: smsReminderNumber,
-      verifiedAt: step.verifiedAt,
-      routedEventTypeId: formData ? formData.routedEventTypeId : null,
-      ...contextData,
     });
   }
 };

@@ -1,6 +1,5 @@
 import { handleMarkAttendeesAndHostNoShow } from "@calcom/features/handleMarkNoShow";
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
-
 import type { TNoShowInputSchema } from "./markNoShow.schema";
 
 type NoShowOptions = {

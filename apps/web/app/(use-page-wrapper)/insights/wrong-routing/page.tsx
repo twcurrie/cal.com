@@ -1,10 +1,7 @@
-import { _generateMetadata } from "app/_utils";
-
 import { UserRepository } from "@calcom/features/users/repositories/UserRepository";
 import prisma from "@calcom/prisma";
-
+import { _generateMetadata } from "app/_utils";
 import InsightsWrongRoutingPage from "~/insights/views/insights-wrong-routing-view";
-
 import { checkInsightsPagePermission } from "../checkInsightsPagePermission";
 
 export const generateMetadata = async () =>

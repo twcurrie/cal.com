@@ -1,18 +1,17 @@
-import type { DeepMockProxy } from "vitest-mock-extended";
-
 import { eventTypeMetaDataSchemaWithTypedApps } from "@calcom/app-store/zod-utils";
 import { sendSlugReplacementEmail } from "@calcom/emails/integration-email-service";
-import logger from "@calcom/lib/logger";
 import { getTranslation } from "@calcom/i18n/server";
+import logger from "@calcom/lib/logger";
 import type { PrismaClient } from "@calcom/prisma";
 import type { EventType, Prisma } from "@calcom/prisma/client";
 import { SchedulingType } from "@calcom/prisma/enums";
+import { EventTypeSchema } from "@calcom/prisma/zod/modelSchema/EventTypeSchema";
 import {
   allManagedEventTypeProps,
   allManagedEventTypePropsForZod,
   unlockedManagedEventTypePropsForZod,
 } from "@calcom/prisma/zod-utils";
-import { EventTypeSchema } from "@calcom/prisma/zod/modelSchema/EventTypeSchema";
+import type { DeepMockProxy } from "vitest-mock-extended";
 
 interface handleChildrenEventTypesProps {
   eventTypeId: number;
@@ -198,7 +197,7 @@ export default async function handleChildrenEventTypes({
   const currentWorkflowIds = eventType.workflows?.map((wf) => wf.workflowId);
 
   // Store result for existent event types deletion process
-  let deletedExistentEventTypes = undefined;
+  let deletedExistentEventTypes;
 
   // New users added
   if (newUserIds?.length) {

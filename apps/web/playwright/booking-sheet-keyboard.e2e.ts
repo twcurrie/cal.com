@@ -1,7 +1,6 @@
 import { BookingStatus } from "@calcom/prisma/enums";
 import type { Page } from "@playwright/test";
 import { expect } from "@playwright/test";
-
 import type { Fixtures } from "./lib/fixtures";
 import { test } from "./lib/fixtures";
 
@@ -86,7 +85,9 @@ async function setupBookingsAndOpenSheet({
       relativeDate: i + 1,
       organizer: user,
       organizerEventType: user.eventTypes[0],
-      attendees: [{ name: `Attendee ${i + 1}`, email: `attendee${i + 1}@example.com`, timeZone: "Europe/Berlin" }],
+      attendees: [
+        { name: `Attendee ${i + 1}`, email: `attendee${i + 1}@example.com`, timeZone: "Europe/Berlin" },
+      ],
     });
     fixtures.push(fixture);
   }
@@ -167,7 +168,7 @@ test.describe("Booking sheet keyboard shortcuts", () => {
       await page.keyboard.press("ArrowDown");
 
       await page.waitForTimeout(500);
-      const dropdownContent = page.locator('[data-radix-popper-content-wrapper]');
+      const dropdownContent = page.locator("[data-radix-popper-content-wrapper]");
       await expect(dropdownContent).toBeHidden();
 
       await expect(sheet.getByTestId("booking-sheet-title")).toHaveText("Booking 2");
@@ -195,7 +196,7 @@ test.describe("Booking sheet keyboard shortcuts", () => {
       await page.keyboard.press("ArrowUp");
 
       await page.waitForTimeout(500);
-      const dropdownContent = page.locator('[data-radix-popper-content-wrapper]');
+      const dropdownContent = page.locator("[data-radix-popper-content-wrapper]");
       await expect(dropdownContent).toBeHidden();
 
       await expect(sheet.getByTestId("booking-sheet-title")).toHaveText("Booking 1");
@@ -244,7 +245,7 @@ test.describe("Booking sheet keyboard shortcuts", () => {
 
       await expect(sheet.getByTestId("booking-sheet-title")).toHaveText("Booking 3");
 
-      const dropdownContent = page.locator('[data-radix-popper-content-wrapper]');
+      const dropdownContent = page.locator("[data-radix-popper-content-wrapper]");
       await expect(dropdownContent).toBeHidden();
     } finally {
       await restoreBookingsV3(prisma, existingFlag);

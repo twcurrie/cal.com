@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { TFunction } from "i18next";
 
 import i18nMock from "../__mocks__/libServerI18n";
 import prismock from "../__mocks__/prisma";
+import type { TFunction } from "i18next";
 import { v4 as uuidv4 } from "uuid";
 import { vi } from "vitest";
 import "vitest-fetch-mock";
@@ -1726,7 +1726,7 @@ export function mockNoTranslations() {
   });
 }
 
-export const enum BookingLocations {
+export enum BookingLocations {
   CalVideo = "integrations:daily",
   ZoomVideo = "integrations:zoom",
   GoogleMeet = "integrations:google:meet",

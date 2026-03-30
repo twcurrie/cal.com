@@ -1,7 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
-
 import type { User } from "@calcom/prisma/client";
 import { UserPermissionRole } from "@calcom/prisma/enums";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@calcom/features/ee/teams/repositories/TeamRepository", () => ({
   TeamRepository: class {

@@ -1,5 +1,5 @@
-import { AppCategories } from "@calcom/prisma/enums";
 import type { PrismaClient } from "@calcom/prisma";
+import { AppCategories } from "@calcom/prisma/enums";
 import { safeCredentialSelect } from "@calcom/prisma/selects/credential";
 
 export class HostRepository {

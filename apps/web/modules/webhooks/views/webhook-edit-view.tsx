@@ -1,13 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-
 import SettingsHeaderWithBackButton from "@calcom/features/settings/appDir/SettingsHeaderWithBackButton";
 import {
-  WEBHOOK_VERSION_OPTIONS,
-  getWebhookVersionLabel,
   getWebhookVersionDocsUrl,
+  getWebhookVersionLabel,
+  WEBHOOK_VERSION_OPTIONS,
 } from "@calcom/features/webhooks/lib/constants";
 import type { WebhookVersion } from "@calcom/features/webhooks/lib/interface/IWebhookRepository";
 import { subscriberUrlReserved } from "@calcom/features/webhooks/lib/subscriberUrlReserved";
@@ -16,12 +13,13 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { WebhookTriggerEvents } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import { Select } from "@calcom/ui/components/form";
-import { ExternalLinkIcon } from "@coss/ui/icons";
 import { SkeletonContainer } from "@calcom/ui/components/skeleton";
 import { showToast } from "@calcom/ui/components/toast";
 import { Tooltip } from "@calcom/ui/components/tooltip";
 import { revalidateWebhooksList } from "@calcom/web/app/(use-page-wrapper)/settings/(settings-layout)/developer/webhooks/(with-loader)/actions";
-
+import { ExternalLinkIcon } from "@coss/ui/icons";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { WebhookFormSubmitData } from "../components/WebhookForm";
 import WebhookForm from "../components/WebhookForm";
 

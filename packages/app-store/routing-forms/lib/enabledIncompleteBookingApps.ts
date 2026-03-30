@@ -1,1 +1,1 @@
-export const enabledIncompleteBookingApps = ["salesforce"];
+export const enabledIncompleteBookingApps: string[] = [];

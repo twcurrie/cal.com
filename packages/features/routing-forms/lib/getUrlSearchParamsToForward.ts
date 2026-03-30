@@ -87,8 +87,6 @@ export function getUrlSearchParamsToForward({
   });
 
   // Build query params from current URL. It excludes route params
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   for (const [name, value] of searchParams.entries()) {
     const target = paramsFromCurrentUrl[name];
     if (target instanceof Array) {
@@ -104,15 +102,6 @@ export function getUrlSearchParamsToForward({
     for (const key of Object.keys(attributeRoutingConfig)) {
       if (key === "skipContactOwner" && attributeRoutingConfig[key]) {
         attributeRoutingConfigParams["cal.skipContactOwner"] = "true";
-      }
-
-      // TODO: How do we move this logic to their respective app packages
-      if (key === "salesforce") {
-        const salesforceData = attributeRoutingConfig[key];
-
-        if (salesforceData?.rrSkipToAccountLookupField && salesforceData.rrSKipToAccountLookupFieldName) {
-          attributeRoutingConfigParams["cal.salesforce.rrSkipToAccountLookupField"] = "true";
-        }
       }
     }
   }

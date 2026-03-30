@@ -22,7 +22,6 @@ import type {
   SeatOptionsDisabledSchema,
   SeatOptionsTransformedSchema,
 } from "@calcom/platform-types";
-
 import {
   type CustomField,
   type SystemField,

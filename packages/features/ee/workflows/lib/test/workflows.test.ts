@@ -1,21 +1,11 @@
 import prismock from "@calcom/testing/lib/__mocks__/prisma";
-
 import {
+  createBookingScenario,
+  createOrganization,
   getOrganizer,
   getScenarioData,
   TestData,
-  createBookingScenario,
-  createOrganization,
 } from "@calcom/testing/lib/bookingScenario/bookingScenario";
-import {
-  expectSMSWorkflowToBeTriggered,
-  expectSMSWorkflowToBeNotTriggered,
-} from "@calcom/testing/lib/bookingScenario/expects";
-import { setupAndTeardown } from "@calcom/testing/lib/bookingScenario/setupAndTeardown";
-
-import { v4 as uuidv4 } from "uuid";
-import { describe, expect, beforeAll, vi, beforeEach } from "vitest";
-
 import dayjs from "@calcom/dayjs";
 import { scheduleBookingReminders } from "@calcom/features/ee/workflows/lib/scheduleBookingReminders";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
@@ -24,16 +14,21 @@ import * as rateLimitModule from "@calcom/lib/checkRateLimitAndThrowError";
 import type { Prisma } from "@calcom/prisma/client";
 import {
   BookingStatus,
-  WorkflowMethods,
   TimeUnit,
-  WorkflowTriggerEvents,
   WorkflowActions,
+  WorkflowMethods,
+  WorkflowTriggerEvents,
 } from "@calcom/prisma/enums";
+import {
+  expectSMSWorkflowToBeNotTriggered,
+  expectSMSWorkflowToBeTriggered,
+} from "@calcom/testing/lib/bookingScenario/expects";
+import { setupAndTeardown } from "@calcom/testing/lib/bookingScenario/setupAndTeardown";
 import { test } from "@calcom/testing/lib/fixtures/fixtures";
-
+import { v4 as uuidv4 } from "uuid";
+import { beforeAll, beforeEach, describe, expect, vi } from "vitest";
 import { deleteWorkfowRemindersOfRemovedMember } from "../../../teams/lib/deleteWorkflowRemindersOfRemovedMember";
 import { deleteRemindersOfActiveOnIds } from "../deleteRemindersOfActiveOnIds";
-import { scheduleAIPhoneCall } from "../reminders/aiPhoneCallManager";
 import { scheduleEmailReminder } from "../reminders/emailReminderManager";
 import * as emailProvider from "../reminders/providers/emailProvider";
 import { bookingSelect } from "../scheduleWorkflowNotifications";
@@ -1239,100 +1234,5 @@ describe("Routing Form Variables", () => {
 
     expect(sentEmail.subject).toBe("Contact info for Special Characters LLC");
     expect(sentEmail.html).toContain("Company: Special Characters LLC, Phone: +1-555-0123");
-  });
-
-  test("should pass routing form responses to AI phone call workflows", async () => {
-    // Mock the feature flag
-    const mockCheckFeature = vi
-      .spyOn(FeaturesRepository.prototype, "checkIfFeatureIsEnabledGlobally")
-      .mockResolvedValue(true);
-
-    // Mock rate limiting
-    const mockRateLimit = vi
-      .spyOn(rateLimitModule, "checkRateLimitAndThrowError")
-      .mockResolvedValue(undefined);
-
-    // Mock the AI agent setup
-    await prismock.agent.create({
-      data: {
-        id: "test-agent-id",
-        providerAgentId: "provider-123",
-        outboundPhoneNumbers: {
-          create: {
-            phoneNumber: "+1234567890",
-            subscriptionStatus: "ACTIVE",
-          },
-        },
-      },
-    });
-
-    await prismock.workflowStep.create({
-      data: {
-        id: 999,
-        stepNumber: 1,
-        action: WorkflowActions.CAL_AI_PHONE_CALL,
-        workflowId: 1,
-        agentId: "test-agent-id",
-        verifiedAt: new Date(),
-      },
-    });
-
-    const mockFormData = {
-      responses: {
-        "customer name": {
-          value: "John Doe",
-          response: "John Doe",
-        },
-        "phone preference": {
-          value: "mobile",
-          response: { label: "mobile", id: "mobile" },
-        },
-        priority: {
-          value: "high",
-          response: { label: "high", id: "high" },
-        },
-      },
-      routedEventTypeId: 123,
-      user: {
-        email: "user@test.com",
-        timeFormat: 12,
-        locale: "en",
-      },
-    };
-
-    const aiPhoneArgs = {
-      submittedPhoneNumber: "+1-555-9999",
-      triggerEvent: WorkflowTriggerEvents.FORM_SUBMITTED,
-      timeSpan: { time: null, timeUnit: null },
-      workflowStepId: 999,
-      userId: 1,
-      teamId: null,
-      verifiedAt: new Date(),
-      formData: mockFormData,
-      routedEventTypeId: 123,
-    };
-
-    const mockTaskerCreate = vi.spyOn(tasker, "create").mockResolvedValue("task-id");
-
-    await scheduleAIPhoneCall(aiPhoneArgs);
-
-    // Verify that the task was created with form responses
-    expect(mockTaskerCreate).toHaveBeenCalled();
-    expect(mockTaskerCreate).toHaveBeenCalledWith(
-      "executeAIPhoneCall",
-      expect.any(Object),
-      expect.any(Object)
-    );
-    const taskData = mockTaskerCreate.mock.calls[0][1] as {
-      responses?: typeof mockFormData.responses;
-      routedEventTypeId?: number;
-    };
-    expect(taskData.responses).toEqual(mockFormData.responses);
-    expect(taskData.routedEventTypeId).toBe(123);
-
-    // Clean up
-    mockTaskerCreate.mockRestore();
-    mockCheckFeature.mockRestore();
-    mockRateLimit.mockRestore();
   });
 });

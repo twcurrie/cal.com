@@ -7,14 +7,5 @@ export const VideoApiAdapterMap =
     ? {}
     : {
         dailyvideo: import("./dailyvideo/lib/VideoApiAdapter"),
-        huddle01video: import("./huddle01video/lib/VideoApiAdapter"),
-        jelly: import("./jelly/lib/VideoApiAdapter"),
-        jitsivideo: import("./jitsivideo/lib/VideoApiAdapter"),
-        nextcloudtalk: import("./nextcloudtalk/lib/VideoApiAdapter"),
-        office365video: import("./office365video/lib/VideoApiAdapter"),
-        shimmervideo: import("./shimmervideo/lib/VideoApiAdapter"),
-        sylapsvideo: import("./sylapsvideo/lib/VideoApiAdapter"),
-        tandemvideo: import("./tandemvideo/lib/VideoApiAdapter"),
-        webex: import("./webex/lib/VideoApiAdapter"),
         zoomvideo: import("./zoomvideo/lib/VideoApiAdapter"),
       };

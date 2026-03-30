@@ -1,4 +1,3 @@
-import routingFormBookingFormHandler from "../salesforce/lib/routingFormBookingFormHandler";
 import type { AttributeRoutingConfig } from "./types/types";
 
 type AppBookingFormHandler = (
@@ -7,8 +6,6 @@ type AppBookingFormHandler = (
   eventTypeId: number
 ) => Promise<{ email: string | null; recordType: string | null; recordId: string | null }>;
 
-const appBookingFormHandler: Record<string, AppBookingFormHandler> = {
-  salesforce: routingFormBookingFormHandler,
-};
+const appBookingFormHandler: Record<string, AppBookingFormHandler> = {};
 
 export default appBookingFormHandler;

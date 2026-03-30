@@ -46,8 +46,8 @@ export function getErrorFromUnknown(cause: unknown): Error & { statusCode?: numb
     return cause;
   }
   if (typeof cause === "string") {
-    // @ts-ignore https://github.com/tc39/proposal-error-cause - must use @ts-ignore because different packages have different TS lib targets
-    return new Error(cause, { cause });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return new Error(cause, { cause } as any);
   }
 
   return new Error(`Unhandled error of type '${typeof cause}''`);

@@ -1,5 +1,3 @@
-import type { NextApiResponse, GetServerSidePropsContext } from "next";
-
 import type { appDataSchemas } from "@calcom/app-store/apps.schemas.generated";
 import { DailyLocationType } from "@calcom/app-store/constants";
 import { eventTypeAppMetadataOptionalSchema } from "@calcom/app-store/zod-utils";
@@ -16,27 +14,26 @@ import { MembershipRepository } from "@calcom/features/membership/repositories/M
 import { ScheduleRepository } from "@calcom/features/schedules/repositories/ScheduleRepository";
 import tasker from "@calcom/features/tasker";
 import { submitUrlForUrlScanning } from "@calcom/features/tasker/tasks/scanWorkflowUrls";
+import { getTranslation } from "@calcom/i18n/server";
 import { validateIntervalLimitOrder } from "@calcom/lib/intervalLimits/validateIntervalLimitOrder";
 import logger from "@calcom/lib/logger";
-import { getTranslation } from "@calcom/i18n/server";
 import { validateBookerLayouts } from "@calcom/lib/validateBookerLayouts";
 import type { PrismaClient } from "@calcom/prisma";
 import { Prisma } from "@calcom/prisma/client";
 import {
-  WorkflowTriggerEvents,
-  SchedulingType,
   EventTypeAutoTranslatedField,
   RRTimestampBasis,
+  SchedulingType,
+  WorkflowTriggerEvents,
 } from "@calcom/prisma/enums";
 import { eventTypeLocations } from "@calcom/prisma/zod-utils";
-
 import { TRPCError } from "@trpc/server";
-
+import type { GetServerSidePropsContext, NextApiResponse } from "next";
 import type { TrpcSessionUser } from "../../../../types";
 import { setDestinationCalendarHandler } from "../../../viewer/calendars/setDestinationCalendar.handler";
 import {
-  ensureUniqueBookingFields,
   ensureEmailOrPhoneNumberIsPresent,
+  ensureUniqueBookingFields,
   handleCustomInputs,
   handlePeriodType,
 } from "../util";
@@ -92,7 +89,6 @@ export const updateHandler = async ({ ctx, input }: UpdateOptions) => {
     bookingFields,
     offsetStart,
     secondaryEmailId,
-    aiPhoneCallConfig,
     isRRWeightsEnabled,
     autoTranslateDescriptionEnabled,
     autoTranslateInstantMeetingTitleEnabled,
@@ -127,14 +123,6 @@ export const updateHandler = async ({ ctx, input }: UpdateOptions) => {
           priority: true,
           weight: true,
           isFixed: true,
-        },
-      },
-      aiPhoneCallConfig: {
-        select: {
-          generalPrompt: true,
-          beginMessage: true,
-          enabled: true,
-          llmId: true,
         },
       },
       calVideoSettings: {
@@ -700,33 +688,6 @@ export const updateHandler = async ({ ctx, input }: UpdateOptions) => {
     }
   }
 
-  if (aiPhoneCallConfig) {
-    if (aiPhoneCallConfig.enabled) {
-      await ctx.prisma.aIPhoneCallConfiguration.upsert({
-        where: {
-          eventTypeId: id,
-        },
-        update: {
-          ...aiPhoneCallConfig,
-          guestEmail: aiPhoneCallConfig?.guestEmail ? aiPhoneCallConfig.guestEmail : null,
-          guestCompany: aiPhoneCallConfig?.guestCompany ? aiPhoneCallConfig.guestCompany : null,
-        },
-        create: {
-          ...aiPhoneCallConfig,
-          guestEmail: aiPhoneCallConfig?.guestEmail ? aiPhoneCallConfig.guestEmail : null,
-          guestCompany: aiPhoneCallConfig?.guestCompany ? aiPhoneCallConfig.guestCompany : null,
-          eventTypeId: id,
-        },
-      });
-    } else if (!aiPhoneCallConfig.enabled && eventType.aiPhoneCallConfig) {
-      await ctx.prisma.aIPhoneCallConfiguration.delete({
-        where: {
-          eventTypeId: id,
-        },
-      });
-    }
-  }
-
   if (calVideoSettings) {
     await CalVideoSettingsRepository.createOrUpdateCalVideoSettings({
       eventTypeId: id,
@@ -814,7 +775,7 @@ export const updateHandler = async ({ ctx, input }: UpdateOptions) => {
   // - If calVideoSettings provided in input, sync to children
   // - If Cal Video location removed, delete from children (pass null)
   // - Otherwise, leave children's settings untouched (pass undefined)
-  let calVideoSettingsForChildren: typeof calVideoSettings | null | undefined = undefined;
+  let calVideoSettingsForChildren: typeof calVideoSettings | null | undefined;
   if (calVideoSettings !== undefined) {
     calVideoSettingsForChildren = calVideoSettings;
   } else if (eventType.calVideoSettings && !isCalVideoLocationActive) {

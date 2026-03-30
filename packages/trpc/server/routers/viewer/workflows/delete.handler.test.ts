@@ -1,23 +1,13 @@
 import { prisma } from "@calcom/prisma/__mocks__/prisma";
-
-import { describe, it, expect, vi, beforeEach } from "vitest";
-
-import { createDefaultAIPhoneServiceProvider } from "@calcom/features/calAIPhone";
 import { isAuthorized } from "@calcom/features/ee/workflows/lib/isAuthorized";
 import { WorkflowRepository } from "@calcom/features/ee/workflows/repositories/WorkflowRepository";
-import { WorkflowActions } from "@calcom/prisma/enums";
-
 import { TRPCError } from "@trpc/server";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { deleteHandler } from "./delete.handler";
-import { removeSmsReminderFieldForEventTypes, removeAIAgentCallPhoneNumberFieldForEventTypes } from "./util";
+import { removeSmsReminderFieldForEventTypes } from "./util";
 
 vi.mock("@calcom/prisma", () => ({
   prisma,
-}));
-
-vi.mock("@calcom/features/calAIPhone", () => ({
-  createDefaultAIPhoneServiceProvider: vi.fn(),
 }));
 
 vi.mock("@calcom/features/ee/workflows/repositories/WorkflowRepository", () => ({
@@ -32,16 +22,11 @@ vi.mock("@calcom/features/ee/workflows/lib/isAuthorized", () => ({
 
 vi.mock("./util", () => ({
   removeSmsReminderFieldForEventTypes: vi.fn(),
-  removeAIAgentCallPhoneNumberFieldForEventTypes: vi.fn(),
 }));
 
 describe("deleteHandler", () => {
-  const mockCreateDefaultAIPhoneServiceProvider = vi.mocked(createDefaultAIPhoneServiceProvider);
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockRemoveSmsReminderFieldForEventTypes = vi.mocked(removeSmsReminderFieldForEventTypes);
-  const mockRemoveAIAgentCallPhoneNumberFieldForEventTypes = vi.mocked(
-    removeAIAgentCallPhoneNumberFieldForEventTypes
-  );
   const mockDeleteAllWorkflowReminders = vi.mocked(WorkflowRepository.deleteAllWorkflowReminders);
 
   const mockUser = {
@@ -86,7 +71,7 @@ describe("deleteHandler", () => {
   });
 
   describe("Booking field cleanup", () => {
-    it("should remove both SMS reminder and AI agent phone number fields", async () => {
+    it("should remove SMS reminder fields", async () => {
       const workflowId = 1;
       const eventTypeIds = [10, 20];
       const mockWorkflow = {
@@ -107,12 +92,6 @@ describe("deleteHandler", () => {
       await deleteHandler({ ctx: mockCtx, input: { id: workflowId } });
 
       expect(mockRemoveSmsReminderFieldForEventTypes).toHaveBeenCalledWith({
-        activeOnToRemove: eventTypeIds,
-        workflowId: workflowId,
-        isOrg: false,
-      });
-
-      expect(mockRemoveAIAgentCallPhoneNumberFieldForEventTypes).toHaveBeenCalledWith({
         activeOnToRemove: eventTypeIds,
         workflowId: workflowId,
         isOrg: false,
@@ -146,87 +125,6 @@ describe("deleteHandler", () => {
         workflowId: workflowId,
         isOrg: true,
       });
-
-      expect(mockRemoveAIAgentCallPhoneNumberFieldForEventTypes).toHaveBeenCalledWith({
-        activeOnToRemove: teamIds,
-        workflowId: workflowId,
-        isOrg: true,
-      });
-    });
-  });
-
-  describe("CAL AI phone call cleanup", () => {
-    let mockAIPhoneService: {
-      cancelPhoneNumberSubscription: ReturnType<typeof vi.fn>;
-      deletePhoneNumber: ReturnType<typeof vi.fn>;
-      deleteAgent: ReturnType<typeof vi.fn>;
-    };
-
-    beforeEach(() => {
-      mockAIPhoneService = {
-        cancelPhoneNumberSubscription: vi.fn(),
-        deletePhoneNumber: vi.fn(),
-        deleteAgent: vi.fn(),
-      };
-      mockCreateDefaultAIPhoneServiceProvider.mockReturnValue(mockAIPhoneService);
-    });
-
-    it("should cleanup AI phone resources based on subscription status", async () => {
-      const workflowId = 1;
-      const mockWorkflow = {
-        id: workflowId,
-        teamId: null,
-        userId: mockUser.id,
-        activeOn: [],
-        activeOnTeams: [],
-        steps: [
-          {
-            action: WorkflowActions.CAL_AI_PHONE_CALL,
-            agent: {
-              id: "agent-1",
-              outboundPhoneNumbers: [
-                {
-                  id: "phone-active",
-                  phoneNumber: "+1111111111",
-                  subscriptionStatus: "ACTIVE",
-                },
-                {
-                  id: "phone-null",
-                  phoneNumber: "+2222222222",
-                  subscriptionStatus: null,
-                },
-              ],
-            },
-          },
-        ],
-        team: null,
-      };
-
-      prisma.workflow.findUnique.mockResolvedValue(mockWorkflow);
-      mockIsAuthorized.mockResolvedValue(true);
-      prisma.workflowReminder.findMany.mockResolvedValue([]);
-      prisma.workflow.deleteMany.mockResolvedValue({ count: 1 });
-
-      await deleteHandler({ ctx: mockCtx, input: { id: workflowId } });
-
-      expect(mockAIPhoneService.cancelPhoneNumberSubscription).toHaveBeenCalledWith({
-        phoneNumberId: "phone-active",
-        userId: mockUser.id,
-      });
-
-      expect(mockAIPhoneService.deletePhoneNumber).toHaveBeenCalledWith({
-        phoneNumber: "+2222222222",
-        userId: mockUser.id,
-        deleteFromDB: true,
-      });
-
-      expect(mockAIPhoneService.deleteAgent).toHaveBeenCalledWith({
-        id: "agent-1",
-        userId: mockUser.id,
-        teamId: undefined,
-      });
-
-      expect(mockRemoveAIAgentCallPhoneNumberFieldForEventTypes).toHaveBeenCalled();
     });
   });
 
@@ -267,7 +165,6 @@ describe("deleteHandler", () => {
       expect(mockDeleteAllWorkflowReminders).toHaveBeenCalledWith(mockReminders);
 
       expect(mockRemoveSmsReminderFieldForEventTypes).toHaveBeenCalled();
-      expect(mockRemoveAIAgentCallPhoneNumberFieldForEventTypes).toHaveBeenCalled();
 
       expect(prisma.workflow.deleteMany).toHaveBeenCalledWith({
         where: {

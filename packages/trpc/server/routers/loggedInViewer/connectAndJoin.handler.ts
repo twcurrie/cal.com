@@ -1,17 +1,15 @@
 import { sendScheduledEmailsAndSMS } from "@calcom/emails/email-manager";
 import { getCalEventResponses } from "@calcom/features/bookings/lib/getCalEventResponses";
 import { scheduleNoShowTriggers } from "@calcom/features/bookings/lib/handleNewBooking/scheduleNoShowTriggers";
-import { isPrismaObjOrUndefined } from "@calcom/lib/isPrismaObj";
 import { getTranslation } from "@calcom/i18n/server";
+import { isPrismaObjOrUndefined } from "@calcom/lib/isPrismaObj";
 import { getTimeFormatStringFromUserTimeFormat } from "@calcom/lib/timeFormat";
 import { prisma } from "@calcom/prisma";
 import { BookingStatus } from "@calcom/prisma/enums";
 import { bookingMetadataSchema, EventTypeMetaDataSchema } from "@calcom/prisma/zod-utils";
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
 import type { CalendarEvent } from "@calcom/types/Calendar";
-
 import { TRPCError } from "@trpc/server";
-
 import type { TConnectAndJoinInputSchema } from "./connectAndJoin.schema";
 
 type Options = {

@@ -1,6 +1,4 @@
-import type { GetServerSidePropsContext } from "next";
-import { z } from "zod";
-
+import process from "node:process";
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { getOrgUsernameFromEmail } from "@calcom/features/auth/signup/utils/getOrgUsernameFromEmail";
 import { checkPremiumUsername } from "@calcom/features/ee/common/lib/checkPremiumUsername";
@@ -10,8 +8,9 @@ import { IS_SELF_HOSTED, WEBAPP_URL } from "@calcom/lib/constants";
 import { emailSchema } from "@calcom/lib/emailSchema";
 import slugify from "@calcom/lib/slugify";
 import { teamMetadataSchema } from "@calcom/prisma/zod-utils";
-
 import { IS_GOOGLE_LOGIN_ENABLED } from "@server/lib/constants";
+import type { GetServerSidePropsContext } from "next";
+import { z } from "zod";
 
 const checkValidEmail = (email: string) => emailSchema.safeParse(email).success;
 

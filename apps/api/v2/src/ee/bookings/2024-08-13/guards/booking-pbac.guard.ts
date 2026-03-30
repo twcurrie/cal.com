@@ -1,16 +1,15 @@
-import { ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
-import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
+import { BookingAccessService } from "@calcom/platform-libraries";
 import {
-  Injectable,
+  BadRequestException,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  Injectable,
   UnauthorizedException,
-  BadRequestException,
 } from "@nestjs/common";
 import { Request } from "express";
-
-import { BookingAccessService } from "@calcom/platform-libraries";
+import { ApiAuthGuardUser } from "@/modules/auth/strategies/api-auth/api-auth.strategy";
+import { PrismaReadService } from "@/modules/prisma/prisma-read.service";
 
 @Injectable()
 export class BookingPbacGuard implements CanActivate {

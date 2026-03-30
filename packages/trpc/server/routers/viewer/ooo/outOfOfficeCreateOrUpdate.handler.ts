@@ -1,7 +1,39 @@
-import { v4 as uuidv4 } from "uuid";
-
-import { selectOOOEntries } from "@calcom/app-store/zapier/api/subscriptions/listOOOEntries";
 import dayjs from "@calcom/dayjs";
+
+const selectOOOEntries = {
+  id: true,
+  uuid: true,
+  start: true,
+  end: true,
+  createdAt: true,
+  updatedAt: true,
+  notes: true,
+  showNotePublicly: true,
+  reason: {
+    select: {
+      reason: true,
+      emoji: true,
+    },
+  },
+  reasonId: true,
+  user: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      timeZone: true,
+    },
+  },
+  toUser: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      timeZone: true,
+    },
+  },
+} as const;
+
 import { sendBookingRedirectNotification } from "@calcom/emails/workflow-email-service";
 import type { GetSubscriberOptions } from "@calcom/features/webhooks/lib/getWebhooks";
 import getWebhooks from "@calcom/features/webhooks/lib/getWebhooks";
@@ -11,11 +43,10 @@ import { getTranslation } from "@calcom/i18n/server";
 import prisma from "@calcom/prisma";
 import { WebhookTriggerEvents } from "@calcom/prisma/enums";
 import type { TrpcSessionUser } from "@calcom/trpc/server/types";
-
 import { TRPCError } from "@trpc/server";
-
+import { v4 as uuidv4 } from "uuid";
 import { isAdminForUser } from "./outOfOffice.utils";
-import { type TOutOfOfficeInputSchema } from "./outOfOfficeCreateOrUpdate.schema";
+import type { TOutOfOfficeInputSchema } from "./outOfOfficeCreateOrUpdate.schema";
 
 type TBookingRedirect = {
   ctx: {

@@ -1,7 +1,5 @@
-import { describe, it, beforeEach, vi, expect } from "vitest";
-
 import { DelegationCredentialRepository } from "@calcom/features/delegation-credentials/repositories/DelegationCredentialRepository";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { toggleDelegationCredentialEnabled } from "./toggleEnabled.handler";
 
 // Mock the repository

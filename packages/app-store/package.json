@@ -29,7 +29,6 @@
     "@calcom/features": "workspace:*",
     "@calcom/i18n": "workspace:*",
     "@calcom/lib": "workspace:*",
-    "@calcom/office365video": "workspace:*",
     "@calcom/ui": "workspace:*",
     "@calcom/zoomvideo": "workspace:*",
     "lodash": "4.17.23",

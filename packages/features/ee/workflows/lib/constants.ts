@@ -1,4 +1,4 @@
-import { WorkflowTriggerEvents, TimeUnit, WorkflowActions, WorkflowTemplates } from "@calcom/prisma/enums";
+import { TimeUnit, WorkflowActions, WorkflowTemplates, WorkflowTriggerEvents } from "@calcom/prisma/enums";
 
 export const WORKFLOW_TRIGGER_EVENTS = [
   WorkflowTriggerEvents.BEFORE_EVENT,
@@ -25,7 +25,6 @@ export const WORKFLOW_ACTIONS = [
   WorkflowActions.SMS_NUMBER,
   WorkflowActions.WHATSAPP_ATTENDEE,
   WorkflowActions.WHATSAPP_NUMBER,
-  WorkflowActions.CAL_AI_PHONE_CALL,
 ] as const;
 
 export const TIME_UNIT = [TimeUnit.DAY, TimeUnit.HOUR, TimeUnit.MINUTE] as const;
@@ -110,5 +109,4 @@ export const ALLOWED_FORM_WORKFLOW_ACTIONS = [
   WorkflowActions.EMAIL_ADDRESS,
   WorkflowActions.SMS_ATTENDEE,
   WorkflowActions.SMS_NUMBER,
-  WorkflowActions.CAL_AI_PHONE_CALL,
 ] as const;

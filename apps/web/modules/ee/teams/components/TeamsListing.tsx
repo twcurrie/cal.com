@@ -1,8 +1,5 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo } from "react";
-
 import { APP_NAME, WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { RouterOutputs } from "@calcom/trpc/react";
@@ -10,6 +7,7 @@ import { Button } from "@calcom/ui/components/button";
 import { ButtonGroup } from "@calcom/ui/components/buttonGroup";
 import { EmptyScreen } from "@calcom/ui/components/empty-screen";
 import { Label } from "@calcom/ui/components/form";
+import { showToast } from "@calcom/ui/components/toast";
 import {
   EyeOffIcon,
   InfoIcon,
@@ -19,11 +17,10 @@ import {
   UsersIcon,
   VideoIcon,
 } from "@coss/ui/icons";
-import { showToast } from "@calcom/ui/components/toast";
-
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo } from "react";
 import SkeletonLoaderTeamList from "~/ee/teams/components/SkeletonloaderTeamList";
 import { UpgradeTip } from "~/shell/UpgradeTip";
-
 import TeamList from "./TeamList";
 
 type TeamsListingProps = {

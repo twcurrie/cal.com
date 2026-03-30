@@ -1,12 +1,16 @@
 import type { ConnectedApps } from "@calcom/app-store/_utils/getConnectedApps";
 import type { EventLocationType } from "@calcom/app-store/locations";
 import type { eventTypeMetaDataSchemaWithTypedApps } from "@calcom/app-store/zod-utils";
-import type { TemplateType } from "@calcom/features/calAIPhone/zod-utils";
 import type { ChildrenEventType } from "@calcom/features/eventtypes/lib/childrenEventType";
 import type { IntervalLimit } from "@calcom/lib/intervalLimits/intervalLimitSchema";
 import type { AttributesQueryValue } from "@calcom/lib/raqb/types";
 import type { EventTypeTranslation } from "@calcom/prisma/client";
-import type { CancellationReasonRequirement, MembershipRole, PeriodType, SchedulingType } from "@calcom/prisma/enums";
+import type {
+  CancellationReasonRequirement,
+  MembershipRole,
+  PeriodType,
+  SchedulingType,
+} from "@calcom/prisma/enums";
 import type {
   BookerLayoutSettings,
   CustomInputSchema,
@@ -74,19 +78,6 @@ type EventLocation = {
   customLabel?: string;
 };
 
-type PhoneCallConfig = {
-  generalPrompt: string;
-  enabled: boolean;
-  beginMessage: string;
-  yourPhoneNumber: string;
-  numberToCall: string;
-  guestName?: string;
-  guestEmail?: string;
-  guestCompany?: string;
-  templateType: string;
-  schedulerName?: string;
-};
-
 export type PrivateLinkWithOptions = {
   link: string;
   expiresAt?: Date | null;
@@ -122,7 +113,6 @@ export type FormValues = {
   eventTypeColor: z.infer<typeof eventTypeColor>;
   customReplyToEmail: string | null;
   locations: EventLocation[];
-  aiPhoneCallConfig: PhoneCallConfig;
   customInputs: CustomInputParsed[];
   schedule: number | null;
   useEventLevelSelectedCalendars: boolean;
@@ -240,18 +230,6 @@ export type HashedLinkInput = {
   expiresAt?: Date | null;
   maxUsageCount?: number | null;
   usageCount?: number | null;
-};
-
-export type AiPhoneCallConfig = {
-  generalPrompt: string;
-  enabled: boolean;
-  beginMessage: string | null;
-  yourPhoneNumber: string;
-  numberToCall: string;
-  guestName?: string | null;
-  guestEmail?: string | null;
-  guestCompany?: string | null;
-  templateType: TemplateType;
 };
 
 export type HostLocationInput = {
@@ -430,9 +408,7 @@ export type EventTypeUpdateInput = {
   updatedAt?: Date | null;
 
   // Extended fields (all optional due to .partial())
-  aiPhoneCallConfig?: AiPhoneCallConfig;
   calVideoSettings?: CalVideoSettings;
-  calAiPhoneScript?: string;
   customInputs?: CustomInputSchema[];
   destinationCalendar?: DestinationCalendarInput;
   users?: number[];
@@ -495,7 +471,7 @@ export type SelectClassNames = {
 };
 
 // Re-export schemas from server-safe location
-export { EventTypeDuplicateInput, createEventTypeInput } from "./schemas";
+export { createEventTypeInput, EventTypeDuplicateInput } from "./schemas";
 
 export type FormValidationResult = {
   isValid: boolean;

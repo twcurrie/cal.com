@@ -1,3 +1,4 @@
+import process from "node:process";
 import { safeStringify } from "@calcom/lib/safeStringify";
 
 export interface Contact extends CreateContact {
