@@ -1,13 +1,12 @@
 import process from "node:process";
-
-const fs = require("node:fs");
-const path = require("node:path");
-const glob = require("glob");
-const crypto = require("node:crypto");
+import fs from "node:fs";
+import path from "node:path";
+import { sync as globSync } from "glob";
+import crypto from "node:crypto";
 
 const copyAppStoreStatic = () => {
   // Get all static files from app-store packages
-  const staticFiles = glob.sync("../../packages/app-store/**/static/**/*", { nodir: true });
+  const staticFiles = globSync("../../packages/app-store/**/static/**/*", { nodir: true });
 
   // Object to store icon SVG hashes
   const SVG_HASHES = {};
